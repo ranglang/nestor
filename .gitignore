@@ -1,0 +1,33 @@
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+/nestor-booker/src/main/resources/bin/
+/nestor-booker/src/main/resources/application.yml
+/nestor-booker/snsEvent.json
+/nestor-booker/template.yaml
+/nestor-core/src/main/resources/application.yml
+/nestor-core/template.yaml
+/todo.txt
+/nestor-booker/bin/

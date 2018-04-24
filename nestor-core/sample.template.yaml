@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform:
+- AWS::Serverless-2016-10-31
+
+Parameters:
+  ProjectId:
+    Type: String
+    Description: Nestor triggers for you!
+
+Resources:
+  nestor-core:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: org.gotson.nestor.interfaces.lambda.Handler
+      CodeUri: ./build/libs/nestor-core-0.0.1-SNAPSHOT-aws.jar
+      Runtime: java8
+      Timeout : 300
+      MemorySize: 2048
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Environment:
+        Variables:
+          FUNCTION_NAME: dailyCron
+          JAVA_TOOL_OPTIONS: '-Dspring.profiles.active=nosns,plaincrypt'
+          AMAZON_REGION: 'region'
+          AMAZON_KMS_CMK: 'arn:aws:kms:blablabla'
+          AMAZON_SNS_TOPIC: 'arn:aws:sns:blablabla'
+          NESTOR_PURE_ADVANCE_BOOKING_DAYS: '2'
+
+      Events:
+        MyTopic:
+          Type: SNS
+          Properties:
+            Topic: 'nestor-bookings'

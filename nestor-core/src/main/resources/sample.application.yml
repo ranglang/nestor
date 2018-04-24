@@ -1,0 +1,5 @@
+amazon:
+  region: region
+  kms.cmk: arn:aws:kms:blablabla
+  sns.topic: arn:aws:sns:blablabla
+nestor.pure.advanceBookingDays: 2
