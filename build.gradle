@@ -2,7 +2,6 @@ buildscript {
     ext {
         kotlin_version = '1.2.31'
         springBootVersion = '1.5.12.RELEASE'
-        thinWrapperVersion = '1.0.10.RELEASE'
         shadowVersion = '2.0.3'
     }
 
@@ -17,7 +16,6 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-noarg:$kotlin_version"
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath("org.springframework.boot.experimental:spring-boot-thin-gradle-plugin:${thinWrapperVersion}")
         classpath "com.github.ben-manes:gradle-versions-plugin:0.17.0"
         classpath 'io.spring.gradle:dependency-management-plugin:1.0.4.RELEASE'
         classpath "com.github.jengelman.gradle.plugins:shadow:${shadowVersion}"
@@ -82,10 +80,10 @@ subprojects {
     }
 }
 
+import com.github.jengelman.gradle.plugins.shadow.transformers.*
+
 configure([project(":nestor-booker"), project(":nestor-core")]) {
-    apply plugin: 'maven'
     apply plugin: 'org.springframework.boot'
-    apply plugin: 'org.springframework.boot.experimental.thin-launcher'
     apply plugin: 'com.github.johnrengelman.shadow'
 
     ext['reactor.version'] = "3.1.2.RELEASE"
@@ -103,6 +101,15 @@ configure([project(":nestor-booker"), project(":nestor-core")]) {
         classifier = 'aws'
         dependencies {
             exclude(dependency("org.springframework.cloud:spring-cloud-function-web:${springCloudFunctionVersion}"))
+        }
+        // Required for Spring
+        mergeServiceFiles()
+        append 'META-INF/spring.handlers'
+        append 'META-INF/spring.schemas'
+        append 'META-INF/spring.tooling'
+        transform(PropertiesFileTransformer) {
+            paths = ['META-INF/spring.factories' ]
+            mergeStrategy = "append"
         }
     }
 
