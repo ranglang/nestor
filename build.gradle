@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlin_version = '1.2.31'
+        kotlin_version = '1.2.40'
         springBootVersion = '1.5.12.RELEASE'
         shadowVersion = '2.0.3'
     }
@@ -8,8 +8,8 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
-        maven { url "https://repo.spring.io/plugins-snapshot" }
-        maven { url "https://repo.spring.io/plugins-milestone" }
+        maven { url = "https://repo.spring.io/plugins-snapshot" }
+        maven { url = "https://repo.spring.io/plugins-milestone" }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -29,19 +29,19 @@ subprojects {
     apply plugin: 'io.spring.dependency-management'
     apply plugin: "com.github.ben-manes.versions"
 
-    group 'org.gotson'
-    version '0.0.1-SNAPSHOT'
+    group = 'org.gotson'
+    version = '0.0.1-SNAPSHOT'
 
     repositories {
         jcenter()
         mavenCentral()
-        maven { url "https://repo.spring.io/snapshot" }
-        maven { url "https://repo.spring.io/milestone" }
+        maven { url = "https://repo.spring.io/snapshot" }
+        maven { url = "https://repo.spring.io/milestone" }
     }
 
     ext {
         springCloudFunctionVersion = "1.0.0.M6"
-        awsSdkVersion = "1.11.314"
+        awsSdkVersion = "1.11.316"
         awsLambdaEventsVersion = "2.1.0"
         awsLambdaCoreVersion = "1.2.0"
         jacksonVersion = "2.9.5"
@@ -66,10 +66,10 @@ subprojects {
         compile 'com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:1.6.0'
         compile 'com.fatboyindustrial.gson-javatime-serialisers:gson-javatime-serialisers:1.1.1'
 
-        compile("org.springframework.cloud:spring-cloud-starter-function-web")
+        compile "org.springframework.cloud:spring-cloud-starter-function-web"
 
-        compile("com.amazonaws:aws-lambda-java-events:${awsLambdaEventsVersion}")
-        compileOnly("com.amazonaws:aws-lambda-java-core:${awsLambdaCoreVersion}")
+        compile"com.amazonaws:aws-lambda-java-events:${awsLambdaEventsVersion}"
+        compileOnly"com.amazonaws:aws-lambda-java-core:${awsLambdaCoreVersion}"
     }
 
     compileKotlin {
@@ -108,7 +108,7 @@ configure([project(":nestor-booker"), project(":nestor-core")]) {
         append 'META-INF/spring.schemas'
         append 'META-INF/spring.tooling'
         transform(PropertiesFileTransformer) {
-            paths = ['META-INF/spring.factories' ]
+            paths = ['META-INF/spring.factories']
             mergeStrategy = "append"
         }
     }
