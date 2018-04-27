@@ -10,6 +10,7 @@ buildscript {
         mavenCentral()
         maven { url = "https://repo.spring.io/plugins-snapshot" }
         maven { url = "https://repo.spring.io/plugins-milestone" }
+        maven { url = "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -19,6 +20,7 @@ buildscript {
         classpath "com.github.ben-manes:gradle-versions-plugin:0.17.0"
         classpath 'io.spring.gradle:dependency-management-plugin:1.0.4.RELEASE'
         classpath "com.github.jengelman.gradle.plugins:shadow:${shadowVersion}"
+        classpath "jp.classmethod.aws:gradle-aws-plugin:0.38"
     }
 }
 
@@ -68,8 +70,8 @@ subprojects {
 
         compile "org.springframework.cloud:spring-cloud-starter-function-web"
 
-        compile"com.amazonaws:aws-lambda-java-events:${awsLambdaEventsVersion}"
-        compileOnly"com.amazonaws:aws-lambda-java-core:${awsLambdaCoreVersion}"
+        compile "com.amazonaws:aws-lambda-java-events:${awsLambdaEventsVersion}"
+        compileOnly "com.amazonaws:aws-lambda-java-core:${awsLambdaCoreVersion}"
     }
 
     compileKotlin {
@@ -80,11 +82,15 @@ subprojects {
     }
 }
 
-import com.github.jengelman.gradle.plugins.shadow.transformers.*
+import com.github.jengelman.gradle.plugins.shadow.transformers.PropertiesFileTransformer
+import jp.classmethod.aws.gradle.s3.AmazonS3FileDeleteTask
+import jp.classmethod.aws.gradle.s3.AmazonS3FileUploadTask
+import jp.classmethod.aws.gradle.s3.CreateBucketTask
 
 configure([project(":nestor-booker"), project(":nestor-core")]) {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'com.github.johnrengelman.shadow'
+    apply plugin: 'jp.classmethod.aws.s3'
 
     ext['reactor.version'] = "3.1.2.RELEASE"
     ext['selenium.version'] = "3.11.0"
@@ -99,6 +105,7 @@ configure([project(":nestor-booker"), project(":nestor-core")]) {
 
     shadowJar {
         classifier = 'aws'
+        version = null
         dependencies {
             exclude(dependency("org.springframework.cloud:spring-cloud-function-web:${springCloudFunctionVersion}"))
         }
@@ -126,4 +133,41 @@ configure([project(":nestor-booker"), project(":nestor-core")]) {
     }
 
     bootRun { systemProperties = System.properties }
+
+
+    def myBucketName = 'gotson-lambda-packages'
+    def jarName = configurations['shadow'].artifacts.files.singleFile.name
+
+    task createS3Bucket(type: CreateBucketTask) {
+        bucketName = myBucketName
+        region = 'ap-southeast-1'
+        ifNotExists = true
+    }
+
+    task uploadJar(type: AmazonS3FileUploadTask, dependsOn: [createS3Bucket, shadowJar]) {
+        file = new File(configurations['shadow'].artifacts.files.singleFile.absolutePath)
+        bucketName = myBucketName
+        key = jarName
+    }
+
+    task deleteJar(type: AmazonS3FileDeleteTask) {
+        bucketName = myBucketName
+        key = jarName
+    }
+
+    task('updateLambdaCode') {
+        dependsOn uploadJar
+        group = 'aws'
+        logging.captureStandardOutput LogLevel.INFO
+        doLast {
+            List<String> functions = project.ext.has('aws.functions') ? project.ext['aws.functions'] : [project.name]
+
+            functions.each { function ->
+                exec {
+                    executable = 'aws'
+                    args = ['lambda', 'update-function-code', '--function-name', function, '--s3-bucket', myBucketName, '--s3-key', jarName]
+                }
+            }
+        }
+    }
 }
