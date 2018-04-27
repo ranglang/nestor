@@ -9,7 +9,10 @@ data class WishedClassDated(
         val location: String,
         val studio: Studio,
         val credentials: Credentials
-)
+) {
+    fun summary(): String =
+            "WishedClassDated(dateTime=$dateTime, type=$type, location=$location)"
+}
 
 fun WishedClass.dated(date: LocalDate): WishedClassDated =
         WishedClassDated(
