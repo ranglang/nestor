@@ -1,3 +1,3 @@
 dependencies {
-    compile 'org.seleniumhq.selenium:selenium-java'
+    compile "org.seleniumhq.selenium:selenium-java"
 }
