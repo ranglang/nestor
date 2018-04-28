@@ -1,6 +1,7 @@
 package org.gotson.nestor.infrastructure
 
 import com.amazonaws.services.lambda.runtime.events.ScheduledEvent
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
@@ -27,6 +28,7 @@ class MapperConfig {
                     .registerModule(JodaModule())
                     .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                     .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                     .addMixIn(ScheduledEvent::class.java, ScheduledEventMixIn::class.java)
 
     @Bean
