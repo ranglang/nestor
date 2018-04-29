@@ -32,7 +32,7 @@ subprojects {
     apply plugin: 'com.github.ben-manes.versions'
 
     group = 'org.gotson'
-    version = '0.0.1-SNAPSHOT'
+    version = '1.0.0'
 
     repositories {
         jcenter()
@@ -81,6 +81,12 @@ subprojects {
     }
     compileTestKotlin {
         kotlinOptions.jvmTarget = '1.8'
+    }
+
+    processResources {
+        filesMatching('application.yml') {
+            expand(project.properties)
+        }
     }
 }
 
