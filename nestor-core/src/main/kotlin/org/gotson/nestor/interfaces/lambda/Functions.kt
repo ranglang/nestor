@@ -2,11 +2,14 @@ package org.gotson.nestor.interfaces.lambda
 
 import com.amazonaws.services.lambda.runtime.events.ScheduledEvent
 import com.fasterxml.jackson.databind.ObjectMapper
+import mu.KotlinLogging
 import org.gotson.nestor.infrastructure.messaging.MessagePublisher
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.util.function.Function
+
+private val logger = KotlinLogging.logger {}
 
 @Configuration
 class Functions @Autowired constructor(
@@ -21,7 +24,9 @@ class Functions @Autowired constructor(
             Function {
                 val requests = pureBooker.findMatchingWishedClasses()
                 requests.forEach { messagePublisher.send(it) }
-                "Sent ${requests.size} event(s)"
+                val msg = "Sent ${requests.size} event(s)"
+                logger.info { msg }
+                msg
             }
 
 //    @Bean
