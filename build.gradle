@@ -150,7 +150,7 @@ configure([project(":nestor-booker"), project(":nestor-core")]) {
         ifNotExists = true
     }
 
-    task uploadJar(type: AmazonS3FileUploadTask, dependsOn: [createS3Bucket, shadowJar]) {
+    task uploadJar(type: AmazonS3FileUploadTask, dependsOn: [createS3Bucket, build]) {
         file = new File(configurations['shadow'].artifacts.files.singleFile.absolutePath)
         bucketName = myBucketName
         key = jarName
