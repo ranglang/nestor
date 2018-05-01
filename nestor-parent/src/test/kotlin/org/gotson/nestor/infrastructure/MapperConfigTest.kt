@@ -1,5 +1,6 @@
 package org.gotson.nestor.infrastructure
 
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
 import com.amazonaws.services.lambda.runtime.events.SNSEvent
 import com.amazonaws.services.lambda.runtime.events.ScheduledEvent
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -38,5 +39,14 @@ class MapperConfigTest {
         val wishedClassDated = mapper.readValue<WishedClassDated>(snsEvent.records[0].sns.message)
 
         assertThat(wishedClassDated).isNotNull()
+    }
+
+    @Test
+    fun `api request event is deserialized without errors`() {
+        val file = ClassPathResource("sample.apiGatewayProxyRequestEvent.json").file
+
+        val apiGatewayProxyRequestEvent = mapper.readValue<APIGatewayProxyRequestEvent>(file)
+
+        assertThat(apiGatewayProxyRequestEvent).isNotNull()
     }
 }

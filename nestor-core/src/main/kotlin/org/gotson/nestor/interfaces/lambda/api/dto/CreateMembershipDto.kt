@@ -1,4 +1,4 @@
-package org.gotson.nestor.interfaces.lambda.dto
+package org.gotson.nestor.interfaces.lambda.api.dto
 
 data class CreateMembershipDto(
         val userId: String,

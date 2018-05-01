@@ -1,4 +1,4 @@
-package org.gotson.nestor.interfaces.lambda.dto
+package org.gotson.nestor.interfaces.lambda.api.dto
 
 import org.gotson.nestor.domain.model.User
 
