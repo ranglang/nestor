@@ -9,6 +9,7 @@ import org.gotson.nestor.infrastructure.persistence.dto.MembershipDynamo
 import org.gotson.nestor.infrastructure.persistence.dto.StudioDynamo
 import org.gotson.nestor.infrastructure.persistence.dto.UserDynamo
 import org.gotson.nestor.infrastructure.persistence.dto.WishedClassDynamo
+import org.gotson.nestor.infrastructure.persistence.dto.toDtoDynamo
 import org.gotson.nestor.infrastructure.persistence.repository.MembershipRepository
 import org.gotson.nestor.infrastructure.persistence.repository.StudioRepository
 import org.gotson.nestor.infrastructure.persistence.repository.UserRepository
@@ -46,20 +47,20 @@ class PersistenceService @Autowired constructor(
             userRepository.findOne(id).toDomain()
 
     fun save(user: User): UserDynamo? =
-            userRepository.save(UserDynamo.from(user))
+            userRepository.save(user.toDtoDynamo())
 
     fun save(studio: Studio): StudioDynamo? =
-            studioRepository.save(StudioDynamo.from(studio))
+            studioRepository.save(studio.toDtoDynamo())
 
     fun save(membership: Membership): MembershipDynamo? {
-        val dto = MembershipDynamo.from(membership)
+        val dto = membership.toDtoDynamo()
         dto.login = encryptionService.encrypt(dto.login!!)
         dto.password = encryptionService.encrypt(dto.password!!)
         return membershipRepository.save(dto)
     }
 
     fun save(wishedClass: WishedClass): WishedClassDynamo? =
-            wishedClassRepository.save(WishedClassDynamo.from(wishedClass))
+            wishedClassRepository.save(wishedClass.toDtoDynamo())
 
     fun WishedClassDynamo.toDomain(): WishedClass {
         return WishedClass(

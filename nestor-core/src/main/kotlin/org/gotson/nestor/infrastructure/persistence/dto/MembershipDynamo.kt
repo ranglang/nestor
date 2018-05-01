@@ -23,14 +23,12 @@ data class MembershipDynamo(
 
         @DynamoDBAttribute
         var password: String? = null
-) {
-    companion object {
-        fun from(membership: Membership): MembershipDynamo =
-                MembershipDynamo(
-                        membership.id,
-                        membership.user.id,
-                        membership.studio.id,
-                        membership.login,
-                        membership.password)
-    }
-}
+)
+
+fun Membership.toDtoDynamo(): MembershipDynamo =
+        MembershipDynamo(
+                id,
+                user.id,
+                studio.id,
+                login,
+                password)

@@ -21,11 +21,9 @@ data class UserDynamo(
         @DynamoDBAttribute
         var lastName: String? = null
 ) {
-    companion object {
-        fun from(user: User): UserDynamo =
-                UserDynamo(user.id, user.email, user.firstName, user.lastName)
-    }
-
     fun toDomain(): User =
             User(id, email!!, firstName!!, lastName!!)
 }
+
+fun User.toDtoDynamo(): UserDynamo =
+        UserDynamo(id, email, firstName, lastName)

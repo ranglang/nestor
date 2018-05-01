@@ -18,11 +18,9 @@ data class StudioDynamo(
         @DynamoDBAttribute
         var url: String? = null
 ) {
-    companion object {
-        fun from(studio: Studio): StudioDynamo =
-                StudioDynamo(studio.id, studio.name, studio.url)
-    }
-
     fun toDomain(): Studio =
             Studio(id, name!!, url!!)
 }
+
+fun Studio.toDtoDynamo(): StudioDynamo =
+        StudioDynamo(id, name, url)

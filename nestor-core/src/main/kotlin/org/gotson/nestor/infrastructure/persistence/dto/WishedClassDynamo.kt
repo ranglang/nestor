@@ -33,18 +33,14 @@ data class WishedClassDynamo(
 
         @DynamoDBAttribute
         var type: String? = null
-) {
+)
 
-
-    companion object {
-        fun from(wishedClass: WishedClass): WishedClassDynamo =
-                WishedClassDynamo(
-                        wishedClass.id,
-                        wishedClass.membership.id,
-                        wishedClass.time,
-                        wishedClass.day,
-                        wishedClass.location,
-                        wishedClass.type
-                )
-    }
-}
+fun WishedClass.toDtoDynamo(): WishedClassDynamo =
+        WishedClassDynamo(
+                id,
+                membership.id,
+                time,
+                day,
+                location,
+                type
+        )
