@@ -87,15 +87,17 @@ class PureDriver(
 
         val previousDateEl = driver.findElement(By.id("txtDate"))
         val previousDateValue = previousDateEl.getAttribute("value")
+        val previousDate = LocalDate.parse(previousDateValue, formatterDateInput)
 
         previousDateEl.sendKeys(*tenLeft, *tenDeletes, date.format(formatterDateInput))
         previousDateEl.submit()
 
         val newDateEl = driver.findElement(By.id("txtDate"))
         val newDateValue = newDateEl.getAttribute("value")
+        val newDate = LocalDate.parse(newDateValue, formatterDateInput)
 
-        logger.info { "Wished date: $date, previous date: $previousDateValue, new date: $newDateValue" }
-        if (newDateValue != date.format(formatterDateInput))
+        logger.info { "Wished date: $date, previous date: $previousDate, new date: $newDate" }
+        if (newDate != date)
             throw Exception("Could not change date to $date")
 
         this.date = date
