@@ -12,7 +12,8 @@ jobs:
       if: branch != master
     - stage: deploy
       if: branch = master
+      install: true
       before_script:
         - pip install --user awscli
         - export PATH=$PATH:$HOME/.local/bin
-      script: ./gradlew nestor-core:updateLambdaCode nestor-core:deleteJar --info
+      script: ./gradlew nestor-core:updateLambdaCode nestor-core:postDeleteJar

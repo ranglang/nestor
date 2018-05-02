@@ -150,13 +150,18 @@ configure([project(":nestor-booker"), project(":nestor-core")]) {
         ifNotExists = true
     }
 
-    task uploadJar(type: AmazonS3FileUploadTask, dependsOn: [createS3Bucket, build]) {
+    task uploadJar(type: AmazonS3FileUploadTask, dependsOn: [createS3Bucket, preDeleteJar, build]) {
         file = new File(configurations['shadow'].artifacts.files.singleFile.absolutePath)
         bucketName = myBucketName
         key = jarName
     }
 
-    task deleteJar(type: AmazonS3FileDeleteTask) {
+    task preDeleteJar(type: AmazonS3FileDeleteTask) {
+        bucketName = myBucketName
+        key = jarName
+    }
+
+    task postDeleteJar(type: AmazonS3FileDeleteTask) {
         bucketName = myBucketName
         key = jarName
         mustRunAfter 'updateLambdaCode'
