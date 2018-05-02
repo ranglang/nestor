@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/gotson/nestor.svg?branch=master)](https://travis-ci.org/gotson/nestor)
+
 # nestor
 A private butler service to book yoga classes, running on AWS Lambda.
 
