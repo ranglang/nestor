@@ -159,6 +159,7 @@ configure([project(":nestor-booker"), project(":nestor-core")]) {
     task deleteJar(type: AmazonS3FileDeleteTask) {
         bucketName = myBucketName
         key = jarName
+        mustRunAfter updateLambdaCode
     }
 
     task('updateLambdaCode') {

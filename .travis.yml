@@ -11,11 +11,8 @@ before_deploy:
   - export PATH=$PATH:$HOME/.local/bin
 jobs:
   include:
-    - stage: compile
     - stage: test
+      if: branch != master
     - stage: deploy
       if: branch = master
-      script: ./gradlew updateLambdaCode
-    - stage: cleanup
-      if: branch = master
-      script: ./gradlew deleteJar
+      script: ./gradlew updateLambdaCode deleteJar
