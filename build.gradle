@@ -165,7 +165,7 @@ configure([project(":nestor-booker"), project(":nestor-core")]) {
     task('updateLambdaCode') {
         dependsOn uploadJar
         group = 'aws'
-//        logging.captureStandardOutput LogLevel.INFO
+        logging.captureStandardOutput LogLevel.INFO
         doLast {
             List<String> functions = project.ext.has('aws.functions') ? project.ext['aws.functions'] : [project.name]
 
