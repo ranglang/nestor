@@ -15,4 +15,4 @@ jobs:
       if: branch != master
     - stage: deploy
       if: branch = master
-      script: ./gradlew updateLambdaCode deleteJar
+      script: ./gradlew updateLambdaCode deleteJar --debug
