@@ -6,10 +6,16 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
-before_install:
+before_deploy:
   - pip install --user awscli
   - export PATH=$PATH:$HOME/.local/bin
 jobs:
   include:
+    - stage: compile
+    - stage: test
     - stage: deploy
+      if: branch = master
       script: ./gradlew updateLambdaCode
+    - stage: cleanup
+      if: branch = master
+      script: ./gradlew deleteJar
