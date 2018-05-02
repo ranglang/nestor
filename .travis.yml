@@ -15,4 +15,4 @@ jobs:
       if: branch != master
     - stage: deploy
       if: branch = master
-      script: ./gradlew updateLambdaCode deleteJar --info
+      script: ./gradlew nestor-core:updateLambdaCode nestor-core:deleteJar --info
