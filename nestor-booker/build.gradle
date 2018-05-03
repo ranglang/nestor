@@ -17,6 +17,8 @@ task downloadChromeHeadless(type: Download) {
     overwrite false
 }
 
+processResources.dependsOn(downloadChromeDriver, downloadChromeHeadless)
+
 dependencies {
     compile "org.seleniumhq.selenium:selenium-java"
 }
