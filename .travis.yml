@@ -16,4 +16,4 @@ jobs:
       before_script:
         - pip install --user awscli
         - export PATH=$PATH:$HOME/.local/bin
-      script: ./gradlew nestor-core:updateLambdaCode nestor-core:postDeleteJar
+      script: ./gradlew updateLambdaCode postDeleteJar
