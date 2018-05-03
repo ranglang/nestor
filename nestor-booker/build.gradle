@@ -1,10 +1,12 @@
+import java.nio.file.Paths
+
 apply plugin: 'de.undercouch.download'
 
 ext['selenium.version'] = '3.11.0'
 
 def chromeDriverVersion = '2.37'
 def chromeHeadlessVersion = 'v1.0.0-35' //chromium 64.0.3282.119 (stable channel) for amazonlinux:2017.03
-def tempDir = File.createTempDir()
+def tempDir = Paths.get(projectDir.path, 'bin').toString()
 def resourcesDir = 'src/main/resources/bin/'
 
 task downloadChromeDriver(type: Download) {
