@@ -4,20 +4,32 @@ ext['selenium.version'] = '3.11.0'
 
 def chromeDriverVersion = '2.37'
 def chromeHeadlessVersion = 'v1.0.0-35' //chromium 64.0.3282.119 (stable channel) for amazonlinux:2017.03
+def tempDir = File.createTempDir()
+def resourcesDir = 'src/main/resources/bin/'
 
 task downloadChromeDriver(type: Download) {
     src "https://chromedriver.storage.googleapis.com/${chromeDriverVersion}/chromedriver_linux64.zip"
-    dest sourceSets.main.resources.srcDirs.first().toPath().resolve('bin/chromedriver').toString()
+    dest new File(tempDir, "chromedriver_linux64_${chromeDriverVersion}.zip")
     overwrite false
+}
+
+task downloadAndUnzipChromeDriver(dependsOn: downloadChromeDriver, type: Copy) {
+    from zipTree(downloadChromeDriver.dest)
+    into resourcesDir
 }
 
 task downloadChromeHeadless(type: Download) {
     src "https://github.com/adieuadieu/serverless-chrome/releases/download/${chromeHeadlessVersion}/stable-headless-chromium-amazonlinux-2017-03.zip"
-    dest sourceSets.main.resources.srcDirs.first().toPath().resolve('bin/headless-chromium').toString()
+    dest new File(tempDir, "stable-headless-chromium-amazonlinux-2017-03_${chromeHeadlessVersion}.zip")
     overwrite false
 }
 
-processResources.dependsOn(downloadChromeDriver, downloadChromeHeadless)
+task downloadAndUnzipChromeHeadless(dependsOn: downloadChromeHeadless, type: Copy) {
+    from zipTree(downloadChromeHeadless.dest)
+    into resourcesDir
+}
+
+processResources.dependsOn(downloadAndUnzipChromeDriver, downloadAndUnzipChromeHeadless)
 
 dependencies {
     compile "org.seleniumhq.selenium:selenium-java"
