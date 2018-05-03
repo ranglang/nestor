@@ -33,7 +33,7 @@ subprojects {
     apply plugin: 'com.github.ben-manes.versions'
 
     group = 'org.gotson'
-    version = '1.0.0'
+    version = '1.0.1'
 
     repositories {
         jcenter()
