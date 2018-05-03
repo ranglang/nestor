@@ -22,8 +22,8 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
-/nestor-booker/src/main/resources/bin/
-/nestor-booker/src/main/resources/application.yml
-/nestor-core/src/main/resources/application.yml
 /nestor-booker/bin/
+/nestor-booker/src/main/resources/bin/
+/nestor-booker/src/main/resources/application-local.yml
+/nestor-core/src/main/resources/application-local.yml
 sam/
