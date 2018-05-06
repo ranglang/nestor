@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service
 
 @Profile("plaincrypt")
 @Service
-class PlaincriptionService : EncryptionService {
+class PlaincryptionService : EncryptionService {
     override fun encrypt(plainText: String): String = plainText
     override fun decrypt(encryptedText: String): String = encryptedText
 }
