@@ -1,6 +1,7 @@
 package org.gotson.nestor.infrastructure.selenium
 
 import mu.KotlinLogging
+import org.gotson.nestor.domain.model.BookingResult
 import org.gotson.nestor.domain.model.PlannedClass
 import org.gotson.nestor.domain.model.PlannedClassBookingState
 import org.openqa.selenium.By
@@ -154,7 +155,7 @@ class PureDriver(
         return this
     }
 
-    fun book(plannedClass: PlannedClass): String {
+    fun book(plannedClass: PlannedClass): BookingResult {
         val el = _bookableClasses[plannedClass] ?: throw Exception("No webElement found for class: $plannedClass")
 
         el.click()
@@ -166,16 +167,16 @@ class PureDriver(
             bookButtonEl.isNotEmpty() -> {
                 bookButtonEl.first().click()
                 logger.info { "Booked class!" }
-                "Booked class!"
+                BookingResult.BOOKED
             }
             waitListButtonEl.isNotEmpty() -> {
                 waitListButtonEl.first().click()
                 logger.info { "Booked on waitlist!" }
-                "Booked on waitlist!"
+                BookingResult.WAITLIST
             }
             else -> {
                 logger.error { "Ooops, could not book nor waitlist" }
-                "Ooops, could not book nor waitlist"
+                BookingResult.ERROR
             }
         }
     }

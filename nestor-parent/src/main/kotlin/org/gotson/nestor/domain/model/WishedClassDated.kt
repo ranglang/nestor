@@ -8,7 +8,8 @@ data class WishedClassDated(
         val type: String,
         val location: String,
         val studio: Studio,
-        val credentials: Credentials
+        val credentials: Credentials,
+        val user: User
 ) {
     fun summary(): String =
             "WishedClassDated(dateTime=$dateTime, type=$type, location=$location)"
@@ -20,5 +21,6 @@ fun WishedClass.dated(date: LocalDate): WishedClassDated =
                 type = type,
                 location = location,
                 studio = membership.studio,
-                credentials = Credentials(membership.login, membership.password)
+                credentials = Credentials(membership.login, membership.password),
+                user = membership.user
         )

@@ -1,6 +1,7 @@
 package org.gotson.nestor.domain.service
 
 import mu.KotlinLogging
+import org.gotson.nestor.domain.model.BookingResult
 import org.gotson.nestor.domain.model.WishedClassDated
 import org.gotson.nestor.infrastructure.encryption.EncryptionService
 import org.gotson.nestor.infrastructure.selenium.PureDriverBuilder
@@ -13,7 +14,8 @@ private val logger = KotlinLogging.logger {}
 @Service
 class BookingService @Autowired constructor(
         private val encryptionService: EncryptionService,
-        private val pureDriverBuilder: PureDriverBuilder
+        private val pureDriverBuilder: PureDriverBuilder,
+        private val notificationSender: NotificationSender
 ) {
 
     fun bookPureYoga(wishedClassDated: WishedClassDated): String {
@@ -36,9 +38,17 @@ class BookingService @Autowired constructor(
             matchingClasses.forEach { logger.info { it } }
 
             return if (matchingClasses.size == 1) {
-                pureDriver.book(matchingClasses.first())
-
+                val classToBook = matchingClasses.first()
+                logger.info { "Found 1 matching class, trying to book it: $classToBook" }
+                val result = pureDriver.book(classToBook)
+                when (result) {
+                    BookingResult.BOOKED -> notificationSender.notifySuccessfulBooking(classToBook, wishedClassDated.user)
+                    BookingResult.WAITLIST -> notificationSender.notifyWaitlistedBooking(classToBook, wishedClassDated.user)
+                    BookingResult.ERROR -> notificationSender.notifyBookingError(classToBook, wishedClassDated.user)
+                }
+                "Found a matching class: $classToBook, booking result: $result"
             } else {
+                notificationSender.notifyNoMatchFound(wishedClassDated)
                 logger.info { "There is not exactly 1 candidate for booking, nothing done" }
                 "There is not exactly 1 candidate for booking, nothing done"
             }
