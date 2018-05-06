@@ -12,7 +12,7 @@ import java.nio.ByteBuffer
 
 private val CHARSET = Charsets.ISO_8859_1
 
-@Profile("default")
+@Profile("!plaincrypt")
 @Service
 class AwsKmsEncryptionService @Autowired constructor(
         @Value("\${amazon.kms.cmk}") private val keyId: String

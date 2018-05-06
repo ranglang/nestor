@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 
 private val logger = KotlinLogging.logger {}
 
-@Profile("default")
+@Profile("!nosns")
 @Service
 class SnsMessagePublisher @Autowired constructor(
         @Value("\${amazon.sns.topic}")
