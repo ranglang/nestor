@@ -5,6 +5,7 @@ import com.amazonaws.services.kms.model.DecryptRequest
 import com.amazonaws.services.kms.model.EncryptRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
 import java.nio.ByteBuffer
@@ -12,6 +13,7 @@ import java.nio.ByteBuffer
 
 private val CHARSET = Charsets.ISO_8859_1
 
+@ConditionalOnProperty(name = ["amazon.kms.cmk"])
 @Profile("!plaincrypt")
 @Service
 class AwsKmsEncryptionService @Autowired constructor(

@@ -5,12 +5,14 @@ import mu.KotlinLogging
 import org.gotson.nestor.domain.service.PureBooker
 import org.gotson.nestor.infrastructure.messaging.MessagePublisher
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.util.function.Function
 
 private val logger = KotlinLogging.logger {}
 
+@ConditionalOnProperty(name = ["amazon.sns.enabled"])
 @Configuration
 class SchedulerFunctions @Autowired constructor(
         private val pureBooker: PureBooker,
