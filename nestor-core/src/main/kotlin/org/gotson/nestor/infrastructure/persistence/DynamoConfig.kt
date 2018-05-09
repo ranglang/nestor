@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 @EnableDynamoDBRepositories(basePackageClasses = [WishedClassRepository::class])
 class DynamoConfig(
-        @Value("\${amazon.region}") private val region: String
+        @Value("\${amazon.dynamodb.region}") private val region: String
 ) {
 
     @Bean(name = ["amazonDynamoDB"])

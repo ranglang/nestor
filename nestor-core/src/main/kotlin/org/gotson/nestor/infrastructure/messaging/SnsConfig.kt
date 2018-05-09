@@ -13,7 +13,7 @@ class SnsConfig {
 
     @Bean
     fun amazonSnsClient(
-            @Value("\${amazon.region}") region: String
+            @Value("\${amazon.sns.region}") region: String
     ): AmazonSNSClient = AmazonSNSClientBuilder.standard()
             .withRegion(region)
             .build() as AmazonSNSClient
