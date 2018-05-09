@@ -85,7 +85,7 @@ subprojects {
     }
 
     processResources {
-        filesMatching('application.yml') {
+        filesMatching('application*.yml') {
             expand(project.properties)
         }
     }
