@@ -1,3 +1,4 @@
 dependencies {
     compile "com.amazonaws:aws-java-sdk-kms:$awsSdkVersion"
+    compile "com.amazonaws:aws-java-sdk-ses:$awsSdkVersion"
 }

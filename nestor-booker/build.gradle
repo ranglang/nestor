@@ -35,5 +35,4 @@ processResources.dependsOn(downloadAndUnzipChromeDriver, downloadAndUnzipChromeH
 
 dependencies {
     compile "org.seleniumhq.selenium:selenium-java"
-    compile "com.amazonaws:aws-java-sdk-ses:$awsSdkVersion"
 }
