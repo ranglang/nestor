@@ -16,7 +16,7 @@ private val logger = KotlinLogging.logger {}
 class PureBooker @Autowired constructor(
         private val persistenceService: PersistenceService,
 
-        @Value("\${nestor.pure.advanceBookingDays:#{2}}")
+        @Value("\${nestor.pure.advance-booking-days:#{2}}")
         private val advanceBookingDays: Long
 ) {
 
@@ -24,7 +24,7 @@ class PureBooker @Autowired constructor(
             date: LocalDate = LocalDate.now().plusDays(advanceBookingDays)
     ): List<WishedClassDated> {
         val classes = persistenceService.findWishedClassByDay(date.dayOfWeek)
-        logger.info { "Found ${classes.size} matching classes" }
+        logger.info { "Found ${classes.size} matching classes for date: $date" }
         return classes.map { it.dated(date) }
     }
 
