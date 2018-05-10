@@ -1,4 +1,4 @@
-package org.gotson.nestor.infrastructure.messaging
+package org.gotson.nestor.infrastructure.messaging.sns
 
 import com.amazonaws.services.sns.AmazonSNSClient
 import com.amazonaws.services.sns.AmazonSNSClientBuilder
