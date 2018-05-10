@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration
 class SnsConfigurationProperties {
     var enabled: Boolean? = null
     var region: String? = null
-    var topics: List<SnsTopic> = ArrayList()
+  var topics: List<SnsTopic> = mutableListOf()
 }
 
 class SnsTopic {

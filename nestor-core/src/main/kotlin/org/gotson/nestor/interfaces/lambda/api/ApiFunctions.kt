@@ -7,28 +7,30 @@ import mu.KotlinLogging
 import org.gotson.nestor.infrastructure.persistence.PersistenceService
 import org.gotson.nestor.interfaces.lambda.api.dto.toDto
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.util.function.Function
 
 private val logger = KotlinLogging.logger {}
 
+@ConditionalOnProperty(name = ["amazon.dynamodb.region"])
 @Configuration
 class ApiFunctions @Autowired constructor(
-        private val persistenceService: PersistenceService,
-        private val mapper: ObjectMapper
+    private val persistenceService: PersistenceService,
+    private val mapper: ObjectMapper
 ) {
 
-    @Bean
-    fun getAllWishedClasses(): Function<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> =
-            Function {
-                val response = APIGatewayProxyResponseEvent()
-                val wishedClasses = persistenceService.findAllWishedClass()
-                val wishedClassesDto = wishedClasses.map { it.toDto() }
-                response.statusCode = 200
-                response.body = mapper.writeValueAsString(wishedClassesDto)
-                response
-            }
+  @Bean
+  fun getAllWishedClasses(): Function<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> =
+      Function {
+        val response = APIGatewayProxyResponseEvent()
+        val wishedClasses = persistenceService.findAllWishedClass()
+        val wishedClassesDto = wishedClasses.map { it.toDto() }
+        response.statusCode = 200
+        response.body = mapper.writeValueAsString(wishedClassesDto)
+        response
+      }
 
 //    @Bean
 //    fun allClasses(): Function<ScheduledEvent, String> =

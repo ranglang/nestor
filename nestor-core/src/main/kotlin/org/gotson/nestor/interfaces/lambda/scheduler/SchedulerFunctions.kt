@@ -12,7 +12,7 @@ import java.util.function.Function
 
 private val logger = KotlinLogging.logger {}
 
-@ConditionalOnProperty(name = ["amazon.sns.enabled"])
+@ConditionalOnProperty(name = ["amazon.dynamodb.region", "amazon.sns.enabled"])
 @Configuration
 class SchedulerFunctions @Autowired constructor(
         private val pureBooker: PureBooker,
