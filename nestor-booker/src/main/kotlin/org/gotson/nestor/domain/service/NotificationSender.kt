@@ -11,11 +11,11 @@ import java.time.format.DateTimeFormatter
 
 @Service
 class NotificationSender @Autowired constructor(
-        @Value("\${nestor.email.format.date}")
+    @Value("\${nestor.email.format.date:EEE d MMM yyyy}")
         private val dateFormat: String,
-        @Value("\${nestor.email.format.time}")
+    @Value("\${nestor.email.format.time:HH:mm}")
         private val timeFormat: String,
-        private val emailSender: EmailSender
+    private val emailSender: EmailSender
 ) {
     private val formatterDate = DateTimeFormatter.ofPattern(dateFormat)
     private val formatterTime = DateTimeFormatter.ofPattern(timeFormat)
