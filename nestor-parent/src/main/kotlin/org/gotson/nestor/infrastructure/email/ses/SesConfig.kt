@@ -1,4 +1,4 @@
-package org.gotson.nestor.infrastructure.email
+package org.gotson.nestor.infrastructure.email.ses
 
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder

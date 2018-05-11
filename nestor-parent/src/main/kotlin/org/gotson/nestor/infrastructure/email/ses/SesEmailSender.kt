@@ -1,4 +1,4 @@
-package org.gotson.nestor.infrastructure.email
+package org.gotson.nestor.infrastructure.email.ses
 
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService
 import com.amazonaws.services.simpleemail.model.Body
@@ -7,6 +7,7 @@ import com.amazonaws.services.simpleemail.model.Destination
 import com.amazonaws.services.simpleemail.model.Message
 import com.amazonaws.services.simpleemail.model.SendEmailRequest
 import mu.KotlinLogging
+import org.gotson.nestor.infrastructure.email.EmailSender
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty

@@ -1,8 +1,9 @@
-package org.gotson.nestor.infrastructure.encryption
+package org.gotson.nestor.infrastructure.encryption.kms
 
 import com.amazonaws.services.kms.AWSKMSClientBuilder
 import com.amazonaws.services.kms.model.DecryptRequest
 import com.amazonaws.services.kms.model.EncryptRequest
+import org.gotson.nestor.infrastructure.encryption.EncryptionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty

@@ -1,5 +1,6 @@
-package org.gotson.nestor.infrastructure.encryption
+package org.gotson.nestor.infrastructure.encryption.plain
 
+import org.gotson.nestor.infrastructure.encryption.EncryptionService
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
 
