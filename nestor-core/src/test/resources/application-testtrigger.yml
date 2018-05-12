@@ -11,6 +11,6 @@ amazon:
         destination: FILTER_CALENDAR
         arn: somearn
   dynamodb.region: ap-southeast-1
-  kms.cmk: somearn
+  kms.region: ap-southeast-1
 nestor:
   pure.advance-booking-days: 2
