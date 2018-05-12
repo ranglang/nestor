@@ -3,7 +3,7 @@ amazon:
   ses:
     region: us-west-2
     from: nestor@test.com
-  kms.cmk: somearn
+  kms.region: ap-southeast-1
 chrome:
   headless.path: bin/headless-chromium
   driver:

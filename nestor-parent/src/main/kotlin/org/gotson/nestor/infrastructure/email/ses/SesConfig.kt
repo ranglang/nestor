@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class SesConfig {
 
-    @Bean
-    fun amazonSesClient(
-            @Value("\${amazon.ses.region}") region: String
-    ): AmazonSimpleEmailService = AmazonSimpleEmailServiceClientBuilder.standard()
-            .withRegion(region)
-            .build()
+  @Bean
+  fun amazonSesClient(
+      @Value("\${amazon.ses.region}") region: String
+  ): AmazonSimpleEmailService = AmazonSimpleEmailServiceClientBuilder.standard()
+      .withRegion(region)
+      .build()
 }

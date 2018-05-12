@@ -8,13 +8,23 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.NoSuchBeanDefinitionException
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.ApplicationContext
+import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.Configuration
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
+
+@Configuration
+@EnableAutoConfiguration
+@ComponentScan(basePackageClasses = [EmailSender::class])
+class EmailAutoWiringTestConfiguration
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
+@ContextConfiguration(classes = [EmailAutoWiringTestConfiguration::class])
 @ActiveProfiles("noemail")
 class AutowiringTest {
 
@@ -30,6 +40,7 @@ class AutowiringTest {
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(properties = ["amazon.ses.region=ap-southeast-1", "amazon.ses.from=test@test.com"])
+@ContextConfiguration(classes = [EmailAutoWiringTestConfiguration::class])
 class AutowiringTest2 {
 
   @Autowired
@@ -44,6 +55,7 @@ class AutowiringTest2 {
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(properties = ["amazon.ses.region=ap-southeast-1", "amazon.ses.from=test@test.com"])
+@ContextConfiguration(classes = [EmailAutoWiringTestConfiguration::class])
 @ActiveProfiles("noemail")
 class AutowiringTest3 {
 
@@ -58,6 +70,8 @@ class AutowiringTest3 {
 }
 
 @RunWith(SpringRunner::class)
+@SpringBootTest
+@ContextConfiguration(classes = [EmailAutoWiringTestConfiguration::class])
 class AutowiringTest4 {
 
   @Autowired
@@ -72,6 +86,7 @@ class AutowiringTest4 {
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(properties = ["amazon.ses.region=ap-southeast-1"])
+@ContextConfiguration(classes = [EmailAutoWiringTestConfiguration::class])
 class AutowiringTest5 {
 
   @Autowired
@@ -86,6 +101,7 @@ class AutowiringTest5 {
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(properties = ["amazon.ses.from=test@test.com"])
+@ContextConfiguration(classes = [EmailAutoWiringTestConfiguration::class])
 class AutowiringTest6 {
 
   @Autowired
