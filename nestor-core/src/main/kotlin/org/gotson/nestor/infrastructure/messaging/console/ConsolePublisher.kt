@@ -14,13 +14,14 @@ private val logger = KotlinLogging.logger {}
 @Profile("nosns")
 @Service
 class ConsolePublisher @Autowired constructor(
-        private val mapper: ObjectMapper
+    private val mapper: ObjectMapper
+
 ) : MessagePublisher {
 
-    override fun send(bookingRequest: WishedClassDated, destination: Destination) {
-        logger.info {
-            "Booking ${mapper.writeValueAsString(bookingRequest)}\n" +
-                    "Destination: $destination"
-        }
+  override fun send(bookingRequest: WishedClassDated, destination: Destination) {
+    logger.info {
+      "Booking ${mapper.writeValueAsString(bookingRequest)}\n" +
+          "Destination: $destination"
     }
+  }
 }

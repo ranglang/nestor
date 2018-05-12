@@ -7,12 +7,12 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 @ConfigurationProperties(prefix = "amazon.sns")
 class SnsConfigurationProperties {
-    var enabled: Boolean? = null
-    var region: String? = null
+  var enabled: Boolean? = null
+  var region: String? = null
   var topics: List<SnsTopic> = mutableListOf()
 }
 
 class SnsTopic {
-    var arn: String? = null
-    var destination: Destination? = null
+  var arn: String? = null
+  var destination: Destination? = null
 }

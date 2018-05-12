@@ -17,7 +17,7 @@ private val logger = KotlinLogging.logger {}
 class PureBooker @Autowired constructor(
     private val persistenceService: PersistenceService,
 
-    @Value("\${nestor.pure.advance-booking-days:#{2}}")
+    @Value("\${nestor.pure.advance-booking-days:2}")
     private val advanceBookingDays: Long
 ) {
 

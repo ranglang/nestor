@@ -11,10 +11,11 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class SnsConfig {
 
-    @Bean
-    fun amazonSnsClient(
-            @Value("\${amazon.sns.region}") region: String
-    ): AmazonSNSClient = AmazonSNSClientBuilder.standard()
-            .withRegion(region)
-            .build() as AmazonSNSClient
+  @Bean
+  fun amazonSnsClient(
+      @Value("\${amazon.sns.region}") region: String
+  ): AmazonSNSClient =
+      AmazonSNSClientBuilder.standard()
+          .withRegion(region)
+          .build() as AmazonSNSClient
 }

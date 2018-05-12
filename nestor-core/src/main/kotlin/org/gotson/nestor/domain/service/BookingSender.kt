@@ -7,13 +7,24 @@ import org.springframework.stereotype.Service
 
 @Service
 class BookingSender @Autowired constructor(
-        private val messagePublisher: MessagePublisher
+    private val messagePublisher: MessagePublisher
 ) {
-    fun send(bookingRequest: WishedClassDated) {
-        messagePublisher.send(bookingRequest, Destination.BOOKING)
-    }
+
+  fun sendForce(bookingRequest: WishedClassDated, destination: Destination) {
+    messagePublisher.send(bookingRequest, destination)
+  }
+
+  fun send(bookingRequest: WishedClassDated) {
+    val hasCalendars = bookingRequest.user.icalCalendars.isNotEmpty()
+    messagePublisher.send(
+        bookingRequest,
+        if (hasCalendars)
+          Destination.FILTER_CALENDAR
+        else
+          Destination.BOOKING)
+  }
 }
 
 enum class Destination {
-    BOOKING, FILTER_CALENDAR
+  BOOKING, FILTER_CALENDAR
 }

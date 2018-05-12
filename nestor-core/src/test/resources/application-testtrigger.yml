@@ -1,0 +1,16 @@
+application.version: TESTING TRIGGER
+amazon:
+  sns:
+    enabled: true
+    region: ap-southeast-1
+    topics:
+      -
+        destination: BOOKING
+        arn: somearn
+      -
+        destination: FILTER_CALENDAR
+        arn: somearn
+  dynamodb.region: ap-southeast-1
+  kms.cmk: somearn
+nestor:
+  pure.advance-booking-days: 2

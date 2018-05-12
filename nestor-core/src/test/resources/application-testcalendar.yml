@@ -1,0 +1,17 @@
+application.version: TESTING CALENDAR CHECK
+amazon:
+  ses:
+    region: us-west-2
+    from: nestor@test.com
+  sns:
+    enabled: true
+    region: ap-southeast-1
+    topics:
+      -
+        destination: BOOKING
+        arn: somearn
+nestor:
+  email:
+    format:
+      date: EEE d MMM yyyy
+      time: HH:mm
