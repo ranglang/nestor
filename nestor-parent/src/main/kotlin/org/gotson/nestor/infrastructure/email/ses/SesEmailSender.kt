@@ -10,38 +10,43 @@ import mu.KotlinLogging
 import org.gotson.nestor.infrastructure.email.EmailSender
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
 
 private val logger = KotlinLogging.logger {}
 
+@ConditionalOnBean(AmazonSimpleEmailService::class)
 @ConditionalOnProperty(name = ["amazon.ses.from"])
 @Profile("!noemail")
 @Service
 class SesEmailSender @Autowired constructor(
-        @Value("\${amazon.ses.from}")
-        private val from: String,
-        private val sesClient: AmazonSimpleEmailService
+    @Value("\${amazon.ses.from}")
+    private val from: String,
+
+    private val sesClient: AmazonSimpleEmailService
+
 ) : EmailSender {
-    private val charset = "UTF-8"
 
-    override fun sendEmail(subject: String, body: String, to: String) {
+  private val charset = "UTF-8"
 
-        sesClient.sendEmail(
-                SendEmailRequest()
-                        .withDestination(Destination().withToAddresses(to))
-                        .withMessage(Message()
-                                .withSubject(Content()
-                                        .withCharset(charset)
-                                        .withData(subject))
-                                .withBody(Body()
-                                        .withText(Content()
-                                                .withCharset(charset)
-                                                .withData(body))))
-                        .withSource(from)
-        )
+  override fun sendEmail(subject: String, body: String, to: String) {
 
-        logger.info { "Email sent to: $to" }
-    }
+    sesClient.sendEmail(
+        SendEmailRequest()
+            .withDestination(Destination().withToAddresses(to))
+            .withMessage(Message()
+                .withSubject(Content()
+                    .withCharset(charset)
+                    .withData(subject))
+                .withBody(Body()
+                    .withText(Content()
+                        .withCharset(charset)
+                        .withData(body))))
+            .withSource(from)
+    )
+
+    logger.info { "Email sent to: $to" }
+  }
 }
