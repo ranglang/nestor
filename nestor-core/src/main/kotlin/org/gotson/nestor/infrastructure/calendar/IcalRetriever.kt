@@ -21,12 +21,18 @@ class IcalRetriever {
 
         val allDayEvents = calendar.events
             .filter { !it.dateStart.value.hasTime() }
-            .filter { !it.dateEnd.value.hasTime() }
+            .filter { it.dateEnd == null || !it.dateEnd.value.hasTime() }
 
         return allDayEvents.map {
+          val actualEnd = if (it.dateEnd == null) {
+            it.dateStart.value.convertToLocalDateViaInstant()
+          } else {
+            it.dateEnd.value.convertToLocalDateViaInstant().minusDays(1)
+          }
+
           BusyTime(
               it.dateStart.value.convertToLocalDateViaInstant(),
-              it.dateEnd.value.convertToLocalDateViaInstant(),
+              actualEnd,
               it.summary.value)
         }
       }
