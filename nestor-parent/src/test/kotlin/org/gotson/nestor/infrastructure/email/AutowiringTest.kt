@@ -108,7 +108,7 @@ class AutowiringTest6 {
   private lateinit var ctx: ApplicationContext
 
   @Test
-  fun `SesEmailSender is not loaded when no profile is defined but but propery amazon-ses-region is missing`() {
+  fun `SesEmailSender is not loaded when no profile is defined but property amazon-ses-region is missing`() {
     assertThatThrownBy { ctx.getBean(EmailSender::class.java) }
         .isInstanceOf(NoSuchBeanDefinitionException::class.java)
   }

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
 
 private val logger = KotlinLogging.logger {}
 
-@ConditionalOnProperty(name = ["amazon.ses.from"])
+@ConditionalOnProperty(name = ["amazon.ses.from", "amazon.ses.region"])
 @Profile("!noemail")
 @Service
 class SesEmailSender @Autowired constructor(
