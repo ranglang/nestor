@@ -1,12 +1,10 @@
 package org.gotson.nestor.infrastructure.encryption
 
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.gotson.nestor.infrastructure.encryption.kms.AwsKmsEncryptionService
 import org.gotson.nestor.infrastructure.encryption.plain.PlaincryptionService
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.springframework.beans.factory.NoSuchBeanDefinitionException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.test.context.SpringBootTest
@@ -26,7 +24,6 @@ class EncryptionAutoWiringTestConfiguration
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @ContextConfiguration(classes = [EncryptionAutoWiringTestConfiguration::class])
-@ActiveProfiles("plaincrypt")
 class AutowiringPlainTest {
 
   @Autowired
@@ -42,6 +39,7 @@ class AutowiringPlainTest {
 @RunWith(SpringRunner::class)
 @SpringBootTest(properties = ["amazon.kms.region=ap-southeast-1"])
 @ContextConfiguration(classes = [EncryptionAutoWiringTestConfiguration::class])
+@ActiveProfiles("kms")
 class AutowiringAwsKmsTest {
 
   @Autowired
@@ -57,29 +55,14 @@ class AutowiringAwsKmsTest {
 @RunWith(SpringRunner::class)
 @SpringBootTest(properties = ["amazon.kms.region=ap-southeast-1"])
 @ContextConfiguration(classes = [EncryptionAutoWiringTestConfiguration::class])
-@ActiveProfiles("plaincrypt")
 class AutowiringAwsKmsTest2 {
 
   @Autowired
   private lateinit var ctx: ApplicationContext
 
   @Test
-  fun `AwsKmsEncryptionService is not loaded when required property is defined but plaincrypt profile is active`() {
+  fun `AwsKmsEncryptionService is not loaded when required property is defined but kms profile is inactive`() {
     assertThat(ctx.getBean(EncryptionService::class.java))
         .isNotInstanceOf(AwsKmsEncryptionService::class.java)
-  }
-}
-
-@RunWith(SpringRunner::class)
-@ContextConfiguration(classes = [EncryptionAutoWiringTestConfiguration::class])
-class AutowiringAwsKmsTest3 {
-
-  @Autowired
-  private lateinit var ctx: ApplicationContext
-
-  @Test
-  fun `AwsKmsEncryptionService is not loaded when no profile is defined but amazon-kms-region property is missing`() {
-    assertThatThrownBy { ctx.getBean(EncryptionService::class.java) }
-        .isInstanceOf(NoSuchBeanDefinitionException::class.java)
   }
 }

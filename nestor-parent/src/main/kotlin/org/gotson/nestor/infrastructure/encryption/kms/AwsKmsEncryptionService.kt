@@ -13,7 +13,7 @@ import java.nio.ByteBuffer
 private val CHARSET = Charsets.ISO_8859_1
 
 @ConditionalOnProperty("amazon.kms.region")
-@Profile("!plaincrypt")
+@Profile("kms")
 @Service
 class AwsKmsEncryptionService @Autowired constructor(
     private val kmsClient: AWSKMS
