@@ -16,5 +16,7 @@ jobs:
       before_script:
         - pip install --user awscli
         - export PATH=$PATH:$HOME/.local/bin
-      script: ./gradlew test --debug
+      script:
+        - ./gradlew build
+        - ./gradlew test --info
 #      script: ./gradlew updateLambdaCode postDeleteJar
