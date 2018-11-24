@@ -48,10 +48,11 @@ class PureDriver(
     fun performUserLogin(userName: String, password: String): PureDriver {
         val userLoginEl = driver.findElement(By.name("requiredtxtUserName"))
         val userPasswordEl = driver.findElement(By.name("requiredtxtPassword"))
+        val btnLoginEl = driver.findElement(By.id("btnLogin"))
 
         userLoginEl.sendKeys(userName)
         userPasswordEl.sendKeys(password)
-        userPasswordEl.submit()
+        btnLoginEl.click()
 
         try {
             val welcomeBanner = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("top-wel-sp")))
