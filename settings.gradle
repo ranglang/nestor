@@ -1,4 +1,2 @@
-include 'nestor-parent'
-include 'nestor-booker'
-include 'nestor-core'
+include 'nestor'
 
