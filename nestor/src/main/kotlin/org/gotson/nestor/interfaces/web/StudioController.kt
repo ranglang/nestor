@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import javax.validation.Valid
@@ -27,6 +28,7 @@ class StudioController(
             studioRepository.findByIdOrNull(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     fun add(@Valid @RequestBody newStudio: Studio): Studio {
         if (!studioRepository.existsByUrl(newStudio.url)) {
             studioRepository.save(newStudio)

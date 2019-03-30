@@ -144,7 +144,7 @@ class UserControllerTest {
         mockMvc.perform(post(route)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonString))
-                .andExpect(status().isOk)
+            .andExpect(status().isCreated)
                 .andExpect(jsonPath("$.firstName", equalTo("Juste")))
     }
 }

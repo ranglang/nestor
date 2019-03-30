@@ -130,7 +130,7 @@ class StudioControllerTest() {
         mockMvc.perform(MockMvcRequestBuilders.post(route)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonString))
-                .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.status().isCreated)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo("Pure Yoga")))
     }
 }
