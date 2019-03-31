@@ -25,8 +25,6 @@ data class Membership(
     @get:NotBlank
     val password: String
 ) {
-  fun redacted() = this.copy(password = "*******")
-
   override fun toString(): String =
-      redacted().toString()
+      "Membership(id=$id, user=$user, studio=$studio, login=$login, password=******)"
 }

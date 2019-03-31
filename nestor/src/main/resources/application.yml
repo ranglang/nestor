@@ -8,7 +8,7 @@ nestor:
     advanceBookingDays: 2
     format:
       time: h:mm a
-      date: dd/MM/yyyy
+      date: d/MM/yyyy
 
 spring:
   h2:

@@ -26,12 +26,12 @@ class MembershipController(
     private val studioRepository: StudioRepository
 ) {
   @GetMapping("/{id}")
-  fun get(@PathVariable id: Long): Membership =
-      membershipRepository.findByIdOrNull(id)?.redacted() ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  fun get(@PathVariable id: Long): MembershipDto =
+      membershipRepository.findByIdOrNull(id)?.toDto() ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  fun add(@Valid @RequestBody newMembership: MemberShipCreationDto): Membership {
+  fun add(@Valid @RequestBody newMembership: MemberShipCreationDto): MembershipDto {
     if (!membershipRepository.existsByUserIdAndStudioId(newMembership.userId, newMembership.studioId)) {
       val user = userRepository.findByIdOrNull(newMembership.userId)
       val studio = studioRepository.findByIdOrNull(newMembership.studioId)
@@ -41,7 +41,7 @@ class MembershipController(
             studio = studio,
             login = newMembership.login,
             password = newMembership.password
-        )).redacted()
+        )).toDto()
         user == null -> throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User doesn't exist")
         studio == null -> throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Studio doesn't exist")
         else -> throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -60,6 +60,17 @@ class MembershipController(
       throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }
+
+data class MembershipDto(
+    val id: Long,
+    val userId: Long,
+    val studioId: Long,
+    val login: String,
+    val password: String = "******"
+)
+
+fun Membership.toDto() =
+    MembershipDto(id!!, user.id!!, studio.id!!, login)
 
 data class MemberShipCreationDto(
     val userId: Long,

@@ -73,7 +73,7 @@ class MembershipControllerTest {
 
     mockMvc.perform(MockMvcRequestBuilders.get("$route/3"))
         .andExpect(MockMvcResultMatchers.status().isOk)
-        .andExpect(MockMvcResultMatchers.jsonPath("$.user.email", equalTo(george.email)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.id", equalTo(membership.id?.toInt())))
   }
 
   @Test
