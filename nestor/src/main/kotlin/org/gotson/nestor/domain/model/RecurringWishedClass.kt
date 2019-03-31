@@ -10,14 +10,14 @@ import javax.persistence.ManyToOne
 
 @Entity
 data class RecurringWishedClass(
-        @Id
-        @GeneratedValue
-        val id: Long? = null,
+    @Id
+    @GeneratedValue
+    val id: Long? = null,
 
-        @ManyToOne(fetch = FetchType.EAGER)
-        val membership: Membership,
-        val time: LocalTime,
-        val day: DayOfWeek,
-        val location: String,
-        val type: String
+    @ManyToOne(fetch = FetchType.EAGER)
+    val membership: Membership,
+    val time: LocalTime,
+    val day: DayOfWeek,
+    val location: String,
+    val type: String
 )

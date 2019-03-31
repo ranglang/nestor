@@ -8,13 +8,13 @@ import javax.validation.constraints.NotBlank
 
 @Entity
 data class Studio(
-        @Id
-        @GeneratedValue
-        val id: Long? = null,
+    @Id
+    @GeneratedValue
+    val id: Long? = null,
 
-        @get:NotBlank
-        val name: String,
+    @get:NotBlank
+    val name: String,
 
-        @get:URL
-        val url: String
+    @get:URL
+    val url: String
 )

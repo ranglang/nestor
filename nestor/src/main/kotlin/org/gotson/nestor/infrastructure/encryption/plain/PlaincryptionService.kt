@@ -5,6 +5,6 @@ import org.springframework.stereotype.Service
 
 @Service
 class PlaincryptionService : EncryptionService {
-    override fun encrypt(plainText: String): String = plainText
-    override fun decrypt(encryptedText: String): String = encryptedText
+  override fun encrypt(plainText: String): String = plainText
+  override fun decrypt(encryptedText: String): String = encryptedText
 }

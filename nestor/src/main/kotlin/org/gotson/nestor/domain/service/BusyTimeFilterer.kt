@@ -8,23 +8,23 @@ import java.time.LocalDate
 
 @Service
 class BusyTimeFilterer constructor(
-        private val icalRetriever: IcalRetriever
+    private val icalRetriever: IcalRetriever
 
 ) {
-    fun checkForConflicts(classRequest: ClassRequest) {
-        val busyTimes = classRequest.membership.user.icalCalendars.flatMap {
-            icalRetriever.getBusyTimes(it)
-        }
-
-        busyTimes.firstOrNull {
-            classRequest.dateTime.toLocalDate().isWithinRange(it.startDate, it.endDate)
-        }?.let {
-            throw ScheduleConflictException("Conflicting schedule", it)
-        }
+  fun checkForConflicts(classRequest: ClassRequest) {
+    val busyTimes = classRequest.membership.user.icalCalendars.flatMap {
+      icalRetriever.getBusyTimes(it)
     }
+
+    busyTimes.firstOrNull {
+      classRequest.dateTime.toLocalDate().isWithinRange(it.startDate, it.endDate)
+    }?.let {
+      throw ScheduleConflictException("Conflicting schedule", it)
+    }
+  }
 }
 
 fun LocalDate.isWithinRange(start: LocalDate, end: LocalDate): Boolean {
-    return (this.isEqual(start) || this.isAfter(start))
-            && (this.isEqual(end) || this.isBefore(end))
+  return (this.isEqual(start) || this.isAfter(start))
+      && (this.isEqual(end) || this.isBefore(end))
 }

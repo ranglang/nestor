@@ -7,5 +7,5 @@ import java.time.DayOfWeek
 
 @Repository
 interface RecurringWishedClassRepository : CrudRepository<RecurringWishedClass, Long> {
-    fun findByDay(dayOfWeek: DayOfWeek): List<RecurringWishedClass>
+  fun findByDay(dayOfWeek: DayOfWeek): List<RecurringWishedClass>
 }

@@ -17,24 +17,24 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("studio")
 class StudioController(
-        private val studioRepository: StudioRepository
+    private val studioRepository: StudioRepository
 ) {
-    @GetMapping
-    fun getAll(): Iterable<Studio> =
-            studioRepository.findAll()
+  @GetMapping
+  fun getAll(): Iterable<Studio> =
+      studioRepository.findAll()
 
-    @GetMapping("/{id}")
-    fun get(@PathVariable id: Long): Studio =
-            studioRepository.findByIdOrNull(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  @GetMapping("/{id}")
+  fun get(@PathVariable id: Long): Studio =
+      studioRepository.findByIdOrNull(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    fun add(@Valid @RequestBody newStudio: Studio): Studio {
-        if (!studioRepository.existsByUrl(newStudio.url)) {
-            studioRepository.save(newStudio)
-            return newStudio
-        } else {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "A studio with this url already exists")
-        }
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  fun add(@Valid @RequestBody newStudio: Studio): Studio {
+    if (!studioRepository.existsByUrl(newStudio.url)) {
+      studioRepository.save(newStudio)
+      return newStudio
+    } else {
+      throw ResponseStatusException(HttpStatus.BAD_REQUEST, "A studio with this url already exists")
     }
+  }
 }

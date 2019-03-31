@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface StudioRepository : CrudRepository<Studio, Long> {
-    fun existsByUrl(url: String): Boolean
+  fun existsByUrl(url: String): Boolean
 }

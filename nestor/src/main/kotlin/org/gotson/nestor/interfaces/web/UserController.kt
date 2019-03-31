@@ -17,24 +17,24 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("user")
 class UserController(
-        private val userRepository: UserRepository
+    private val userRepository: UserRepository
 ) {
-    @GetMapping
-    fun getAll(): Iterable<User> =
-            userRepository.findAll()
+  @GetMapping
+  fun getAll(): Iterable<User> =
+      userRepository.findAll()
 
-    @GetMapping("/{id}")
-    fun getOne(@PathVariable id: Long): User =
-            userRepository.findByIdOrNull(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  @GetMapping("/{id}")
+  fun getOne(@PathVariable id: Long): User =
+      userRepository.findByIdOrNull(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    fun addOne(@Valid @RequestBody newUser: User): User {
-        if (!userRepository.existsByEmail(newUser.email)) {
-            userRepository.save(newUser)
-            return newUser
-        } else {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "A user with this email already exists")
-        }
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  fun addOne(@Valid @RequestBody newUser: User): User {
+    if (!userRepository.existsByEmail(newUser.email)) {
+      userRepository.save(newUser)
+      return newUser
+    } else {
+      throw ResponseStatusException(HttpStatus.BAD_REQUEST, "A user with this email already exists")
     }
+  }
 }

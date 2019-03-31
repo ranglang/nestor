@@ -10,26 +10,26 @@ private val logger = KotlinLogging.logger {}
 
 @Service
 class PureDriverBuilder @Autowired constructor(
-        @Value("\${chrome.driver.wait}") private val chromeDriverWait: Long,
-        @Value("\${nestor.pure.format.time}") private val timeFormat: String,
-        @Value("\${nestor.pure.format.date}") private val dateFormat: String
+    @Value("\${chrome.driver.wait}") private val chromeDriverWait: Long,
+    @Value("\${nestor.pure.format.time}") private val timeFormat: String,
+    @Value("\${nestor.pure.format.date}") private val dateFormat: String
 ) {
 
-    fun build(): PureDriver {
-        return PureDriver(
-                chromeOptionsForEnvironment(),
-                chromeDriverWait,
-                timeFormat,
-                dateFormat)
-    }
+  fun build(): PureDriver {
+    return PureDriver(
+        chromeOptionsForEnvironment(),
+        chromeDriverWait,
+        timeFormat,
+        dateFormat)
+  }
 
-    private fun chromeOptionsForEnvironment(): ChromeOptions {
-        val options = ChromeOptions()
+  private fun chromeOptionsForEnvironment(): ChromeOptions {
+    val options = ChromeOptions()
 
-        val defaultArguments = listOf("--headless")
-        options.addArguments(defaultArguments)
-        logger.debug { "Default arguments: $defaultArguments" }
+    val defaultArguments = listOf("--headless")
+    options.addArguments(defaultArguments)
+    logger.debug { "Default arguments: $defaultArguments" }
 
-        return options
-    }
+    return options
+  }
 }

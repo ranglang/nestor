@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface MembershipRepository : CrudRepository<Membership, Long> {
-    fun existsByUserIdAndStudioId(userId: Long, studioId: Long): Boolean
+  fun existsByUserIdAndStudioId(userId: Long, studioId: Long): Boolean
 }

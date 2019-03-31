@@ -10,19 +10,19 @@ import javax.validation.constraints.NotBlank
 
 @Entity
 data class User(
-        @Id
-        @GeneratedValue
-        val id: Long? = null,
+    @Id
+    @GeneratedValue
+    val id: Long? = null,
 
-        @get:Email
-        val email: String,
+    @get:Email
+    val email: String,
 
-        @get:NotBlank
-        val firstName: String,
+    @get:NotBlank
+    val firstName: String,
 
-        @get:NotBlank
-        val lastName: String,
+    @get:NotBlank
+    val lastName: String,
 
-        @ElementCollection(fetch = FetchType.EAGER)
-        val icalCalendars: List<String> = emptyList()
+    @ElementCollection(fetch = FetchType.EAGER)
+    val icalCalendars: List<String> = emptyList()
 )

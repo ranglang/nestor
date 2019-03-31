@@ -10,16 +10,16 @@ private val logger = KotlinLogging.logger {}
 
 @Controller
 class ScheduledController(
-        private val classRequestFinder: ClassRequestFinder,
-        private val bookingService: BookingService
+    private val classRequestFinder: ClassRequestFinder,
+    private val bookingService: BookingService
 ) {
 
-    @Scheduled(cron = "\${nestor.schedule}")
-    fun scheduledRun() {
-        classRequestFinder.findRecurring().forEach { classRequest ->
-            bookingService.bookPureYoga(classRequest)
-        }
+  @Scheduled(cron = "\${nestor.schedule}")
+  fun scheduledRun() {
+    classRequestFinder.findRecurring().forEach { classRequest ->
+      bookingService.bookPureYoga(classRequest)
     }
+  }
 
 }
 

@@ -12,18 +12,18 @@ private val logger = KotlinLogging.logger {}
 
 @Service
 class ClassRequestFinder(
-        private val recurringWishedClassRepository: RecurringWishedClassRepository,
+    private val recurringWishedClassRepository: RecurringWishedClassRepository,
 
-        @Value("\${nestor.pure.advance-booking-days:2}")
-        private val advanceBookingDays: Long
+    @Value("\${nestor.pure.advance-booking-days:2}")
+    private val advanceBookingDays: Long
 ) {
 
-    fun findRecurring(
-            date: LocalDate = LocalDate.now().plusDays(advanceBookingDays)
-    ): List<ClassRequest> {
-        val classes = recurringWishedClassRepository.findByDay(date.dayOfWeek)
-        logger.info { "Found ${classes.size} matching classes for date: $date" }
-        return classes.map { it.dated(date) }
-    }
+  fun findRecurring(
+      date: LocalDate = LocalDate.now().plusDays(advanceBookingDays)
+  ): List<ClassRequest> {
+    val classes = recurringWishedClassRepository.findByDay(date.dayOfWeek)
+    logger.info { "Found ${classes.size} matching classes for date: $date" }
+    return classes.map { it.dated(date) }
+  }
 
 }

@@ -12,28 +12,28 @@ import java.time.LocalDateTime
 
 class ClassMatcherKtTest {
 
-    @Test
-    fun `class matching is case insensitive`() {
-        val planned = PlannedClass(
-                dateTime = LocalDateTime.of(2018, 4, 29, 10, 15),
-                type = "Yoga for Runners",
-                instructor = "Priscilla",
-                location = "Yoga - Hutchison House",
-                bookingState = PlannedClassBookingState.OPEN)
-        val wished = ClassRequest(
-                dateTime = LocalDateTime.of(2018, 4, 29, 10, 15),
-                type = "yoga for runners",
-                location = "hutchison house",
-                membership = Membership(
-                        id = 123,
-                        user = User(123, "john@doe.com", "John", "Doe"),
-                        studio = Studio(id = 123, name = "studio", url = "url"),
-                        login = "user",
-                        password = "pass"
-                )
+  @Test
+  fun `class matching is case insensitive`() {
+    val planned = PlannedClass(
+        dateTime = LocalDateTime.of(2018, 4, 29, 10, 15),
+        type = "Yoga for Runners",
+        instructor = "Priscilla",
+        location = "Yoga - Hutchison House",
+        bookingState = PlannedClassBookingState.OPEN)
+    val wished = ClassRequest(
+        dateTime = LocalDateTime.of(2018, 4, 29, 10, 15),
+        type = "yoga for runners",
+        location = "hutchison house",
+        membership = Membership(
+            id = 123,
+            user = User(123, "john@doe.com", "John", "Doe"),
+            studio = Studio(id = 123, name = "studio", url = "url"),
+            login = "user",
+            password = "pass"
         )
+    )
 
-        assertThat(wished.matches(planned)).isTrue()
-    }
+    assertThat(wished.matches(planned)).isTrue()
+  }
 
 }
