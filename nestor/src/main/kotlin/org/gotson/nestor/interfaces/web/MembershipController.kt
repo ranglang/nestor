@@ -25,6 +25,10 @@ class MembershipController(
     private val userRepository: UserRepository,
     private val studioRepository: StudioRepository
 ) {
+  @GetMapping
+  fun getAll(): Iterable<MembershipDto> =
+      membershipRepository.findAll().map { it.toDto() }
+
   @GetMapping("/{id}")
   fun get(@PathVariable id: Long): MembershipDto =
       membershipRepository.findByIdOrNull(id)?.toDto() ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)

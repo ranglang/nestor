@@ -26,6 +26,10 @@ class WishedClassController(
     private val classRepository: RecurringWishedClassRepository,
     private val membershipRepository: MembershipRepository
 ) {
+  @GetMapping
+  fun getAll(): Iterable<RecurringWishedClassDto> =
+      classRepository.findAll().map { it.toDto() }
+
   @GetMapping("/{id}")
   fun get(@PathVariable id: Long): RecurringWishedClassDto =
       classRepository.findByIdOrNull(id)?.toDto() ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)

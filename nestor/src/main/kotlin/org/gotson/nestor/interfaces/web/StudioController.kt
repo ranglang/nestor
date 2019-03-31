@@ -4,6 +4,7 @@ import org.gotson.nestor.domain.model.Studio
 import org.gotson.nestor.domain.persistence.StudioRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -36,5 +37,14 @@ class StudioController(
     } else {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, "A studio with this url already exists")
     }
+  }
+
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun delete(@PathVariable id: Long) {
+    if (studioRepository.existsById(id))
+      studioRepository.deleteById(id)
+    else
+      throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }

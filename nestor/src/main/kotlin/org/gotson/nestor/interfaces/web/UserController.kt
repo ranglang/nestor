@@ -4,6 +4,7 @@ import org.gotson.nestor.domain.model.User
 import org.gotson.nestor.domain.persistence.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -36,5 +37,14 @@ class UserController(
     } else {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, "A user with this email already exists")
     }
+  }
+
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun delete(@PathVariable id: Long) {
+    if (userRepository.existsById(id))
+      userRepository.deleteById(id)
+    else
+      throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }
