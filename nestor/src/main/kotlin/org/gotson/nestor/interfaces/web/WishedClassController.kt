@@ -5,6 +5,9 @@ import org.gotson.nestor.domain.persistence.MembershipRepository
 import org.gotson.nestor.domain.persistence.RecurringWishedClassRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -23,6 +26,10 @@ class WishedClassController(
     private val classRepository: RecurringWishedClassRepository,
     private val membershipRepository: MembershipRepository
 ) {
+  @GetMapping("/{id}")
+  fun get(@PathVariable id: Long): RecurringWishedClassDto =
+      classRepository.findByIdOrNull(id)?.toDto() ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   fun addOne(@Valid @RequestBody wishedClass: RecurringWishedClassCreationDto): RecurringWishedClassDto {
@@ -37,6 +44,15 @@ class WishedClassController(
             type = wishedClass.type
         )
     ).toDto()
+  }
+
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun delete(@PathVariable id: Long) {
+    if (classRepository.existsById(id))
+      classRepository.deleteById(id)
+    else
+      throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }
 
