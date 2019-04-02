@@ -32,7 +32,7 @@ class StudioControllerTest(
   private val pureYoga = Studio(1, "Pure Yoga", "http://pureyoga.com")
   private val pureFitness = Studio(2, "Pure Fitness", "http://purefitness.com")
 
-  private val route = "/studio"
+  private val route = "/studios"
 
   @Nested
   inner class GetAll {

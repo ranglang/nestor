@@ -3,11 +3,11 @@ package org.gotson.nestor.interfaces.web
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import org.gotson.nestor.domain.model.Membership
-import org.gotson.nestor.domain.model.RecurringWishedClass
 import org.gotson.nestor.domain.model.Studio
 import org.gotson.nestor.domain.model.User
+import org.gotson.nestor.domain.model.WeeklyClassRequest
 import org.gotson.nestor.domain.persistence.MembershipRepository
-import org.gotson.nestor.domain.persistence.RecurringWishedClassRepository
+import org.gotson.nestor.domain.persistence.WeeklyClassRequestRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -44,7 +44,7 @@ class WishedClassControllerTest(
       "password"
   )
 
-  private val route = "/wishedclass"
+  private val route = "/weeklyclassrequests"
 
   @BeforeEach
   fun initMocks() {

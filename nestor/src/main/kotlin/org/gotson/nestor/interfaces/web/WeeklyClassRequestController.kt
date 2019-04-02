@@ -21,9 +21,9 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 @RestController
-@RequestMapping("/wishedclass")
-class WishedClassController(
-    private val classRepository: RecurringWishedClassRepository,
+@RequestMapping("/weeklyclassrequests")
+class WeeklyClassRequestController(
+    private val classRepository: WeeklyClassRequestRepository,
     private val membershipRepository: MembershipRepository
 ) {
   @GetMapping

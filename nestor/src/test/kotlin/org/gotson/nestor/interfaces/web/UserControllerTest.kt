@@ -33,7 +33,7 @@ class UserControllerTest(
   private val jacky = User(1, "jacky@gmail.com", "Jacky", "Boulet", emptyList())
   private val george = User(2, "george@gmail.com", "George", "McKenzie", emptyList())
 
-  private val route = "/user"
+  private val route = "/users"
 
   @Nested
   inner class GetAll {

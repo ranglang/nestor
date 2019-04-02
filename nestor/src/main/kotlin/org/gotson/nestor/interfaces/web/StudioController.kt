@@ -16,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("studio")
+@RequestMapping("studios")
 class StudioController(
     private val studioRepository: StudioRepository
 ) {

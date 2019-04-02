@@ -16,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("users")
 class UserController(
     private val userRepository: UserRepository
 ) {

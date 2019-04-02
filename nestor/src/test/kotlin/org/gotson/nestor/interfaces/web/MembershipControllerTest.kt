@@ -41,7 +41,7 @@ class MembershipControllerTest(
   private val george = User(2, "george@gmail.com", "George", "McKenzie", emptyList())
   private val membership = Membership(3, george, studio, "login", "password")
 
-  private val route = "/membership"
+  private val route = "/memberships"
 
   @BeforeEach
   fun setupMocks() {

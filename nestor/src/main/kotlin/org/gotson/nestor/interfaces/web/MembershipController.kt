@@ -19,7 +19,7 @@ import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 
 @RestController
-@RequestMapping("membership")
+@RequestMapping("memberships")
 class MembershipController(
     private val membershipRepository: MembershipRepository,
     private val userRepository: UserRepository,
