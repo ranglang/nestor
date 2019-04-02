@@ -1,7 +1,7 @@
 package org.gotson.nestor.domain.service
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 class BusyTimeFiltererKtTest {

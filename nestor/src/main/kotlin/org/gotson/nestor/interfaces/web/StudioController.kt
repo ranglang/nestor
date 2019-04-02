@@ -32,8 +32,7 @@ class StudioController(
   @ResponseStatus(HttpStatus.CREATED)
   fun add(@Valid @RequestBody newStudio: Studio): Studio {
     if (!studioRepository.existsByUrl(newStudio.url)) {
-      studioRepository.save(newStudio)
-      return newStudio
+      return studioRepository.save(newStudio)
     } else {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, "A studio with this url already exists")
     }

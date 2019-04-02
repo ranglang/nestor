@@ -43,7 +43,14 @@ dependencies {
 
   runtimeOnly("com.h2database:h2:1.4.199")
 
-  testImplementation("org.springframework.boot:spring-boot-starter-test")
+  testImplementation("org.springframework.boot:spring-boot-starter-test") {
+    exclude(module = "junit")
+    exclude(module = "mockito-core")
+  }
+  testImplementation("org.junit.jupiter:junit-jupiter-api")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+  testImplementation("com.ninja-squad:springmockk:1.1.1")
+  testImplementation("io.mockk:mockk:1.9.3")
 }
 
 tasks {
@@ -52,6 +59,10 @@ tasks {
       jvmTarget = "1.8"
       freeCompilerArgs = listOf("-Xjsr305=strict")
     }
+  }
+
+  withType<Test> {
+    useJUnitPlatform()
   }
 
   withType<ProcessResources> {

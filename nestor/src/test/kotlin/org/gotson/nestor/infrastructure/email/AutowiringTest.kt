@@ -3,8 +3,8 @@ package org.gotson.nestor.infrastructure.email
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.nestor.infrastructure.email.console.ConsoleEmailSender
 import org.gotson.nestor.infrastructure.email.simple.SimpleEmailSender
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.test.context.SpringBootTest
@@ -13,14 +13,14 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan(basePackageClasses = [EmailSender::class])
 class EmailAutoWiringTestConfiguration
 
-@RunWith(SpringRunner::class)
+@ExtendWith(SpringExtension::class)
 @SpringBootTest
 @ContextConfiguration(classes = [EmailAutoWiringTestConfiguration::class])
 @ActiveProfiles("default")
@@ -36,7 +36,7 @@ class AutowiringConsoleEmailSenderTest {
   }
 }
 
-@RunWith(SpringRunner::class)
+@ExtendWith(SpringExtension::class)
 @SpringBootTest
 @ContextConfiguration(classes = [EmailAutoWiringTestConfiguration::class])
 @ActiveProfiles("email")

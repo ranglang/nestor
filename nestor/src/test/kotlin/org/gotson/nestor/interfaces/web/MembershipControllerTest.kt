@@ -1,5 +1,7 @@
 package org.gotson.nestor.interfaces.web
 
+import com.ninjasquad.springmockk.MockkBean
+import io.mockk.every
 import org.gotson.nestor.domain.model.Membership
 import org.gotson.nestor.domain.model.Studio
 import org.gotson.nestor.domain.model.User
@@ -7,37 +9,33 @@ import org.gotson.nestor.domain.persistence.MembershipRepository
 import org.gotson.nestor.domain.persistence.StudioRepository
 import org.gotson.nestor.domain.persistence.UserRepository
 import org.hamcrest.Matchers.equalTo
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.AdditionalMatchers.not
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.eq
-import org.mockito.BDDMockito.given
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
-import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
 
-@RunWith(SpringRunner::class)
+@ExtendWith(SpringExtension::class)
 @SpringBootTest
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
-class MembershipControllerTest {
-  @Autowired
-  lateinit var mockMvc: MockMvc
-
-  @MockBean
-  lateinit var membershipRepository: MembershipRepository
-  @MockBean
-  lateinit var studioRepository: StudioRepository
-  @MockBean
-  lateinit var userRepository: UserRepository
+class MembershipControllerTest(
+    @Autowired private val mockMvc: MockMvc
+) {
+  @MockkBean
+  private lateinit var membershipRepository: MembershipRepository
+  @MockkBean
+  private lateinit var studioRepository: StudioRepository
+  @MockkBean
+  private lateinit var userRepository: UserRepository
 
   private val studio = Studio(1, "Pure Yoga", "http://pureyoga.com")
   private val george = User(2, "george@gmail.com", "George", "McKenzie", emptyList())
@@ -45,139 +43,146 @@ class MembershipControllerTest {
 
   private val route = "/membership"
 
-  @Before
+  @BeforeEach
   fun setupMocks() {
-    given(studioRepository.existsById(1)).willReturn(true)
-    given(studioRepository.existsById(not(eq(1L)))).willReturn(false)
-    given(studioRepository.findById(1)).willReturn(Optional.of(studio))
+    every { studioRepository.existsById(1) } returns true
+    every { studioRepository.existsById(neq(1)) } returns false
+    every { studioRepository.findById(1) } returns Optional.of(studio)
+    every { studioRepository.findById(neq(1)) } returns Optional.empty()
 
-    given(userRepository.existsById(2)).willReturn(true)
-    given(userRepository.existsById(not(eq(2L)))).willReturn(false)
-    given(userRepository.findById(2)).willReturn(Optional.of(george))
+    every { userRepository.existsById(2) } returns true
+    every { userRepository.existsById(neq(2)) } returns false
+    every { userRepository.findById(2) } returns Optional.of(george)
+    every { userRepository.findById(neq(2)) } returns Optional.empty()
+
+    every { membershipRepository.existsByUserIdAndStudioId(any(), any()) } returns false
   }
 
-  companion object {
+  @Nested
+  inner class GetOne {
+    @Test
+    fun `given incorrect id when getOne then return error not found`() {
+      every { membershipRepository.findById(any()) } returns Optional.empty()
+
+      mockMvc.perform(MockMvcRequestBuilders.get("$route/12"))
+          .andExpect(status().isNotFound)
+    }
+
+    @Test
+    fun `given membership id when getOne then return membership`() {
+      every { membershipRepository.findById(3) } returns Optional.of(membership)
+
+      mockMvc.perform(MockMvcRequestBuilders.get("$route/3"))
+          .andExpect(status().isOk)
+          .andExpect(jsonPath("$.id", equalTo(membership.id?.toInt())))
+    }
   }
 
-  @Test
-  fun `given incorrect id when getOne then return error not found`() {
-    given(membershipRepository.findById(any())).willReturn(Optional.empty())
+  @Nested
+  inner class AddOne {
+    @Test
+    fun `given membership without login when addOne then return bad request`() {
+      val jsonString = """{"userId":"2", "studioId":"1", "password":"password"}"""
 
-    mockMvc.perform(MockMvcRequestBuilders.get("$route/12"))
-        .andExpect(MockMvcResultMatchers.status().isNotFound)
-  }
+      mockMvc.perform(MockMvcRequestBuilders.post(route)
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(jsonString))
+          .andExpect(status().isBadRequest)
+    }
 
-  @Test
-  fun `given membership id when getOne then return membership`() {
-    given(membershipRepository.findById(3)).willReturn(Optional.of(membership))
+    @Test
+    fun `given membership with blank login when addOne then return bad request`() {
+      val jsonString = """{"userId":"2", "studioId":"1", "login":"", "password":"password"}"""
 
-    mockMvc.perform(MockMvcRequestBuilders.get("$route/3"))
-        .andExpect(MockMvcResultMatchers.status().isOk)
-        .andExpect(MockMvcResultMatchers.jsonPath("$.id", equalTo(membership.id?.toInt())))
-  }
+      mockMvc.perform(MockMvcRequestBuilders.post(route)
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(jsonString))
+          .andExpect(status().isBadRequest)
+    }
 
-  @Test
-  fun `given membership without login when addOne then return bad request`() {
-    val jsonString = """{"userId":"2", "studioId":"1", "password":"password"}"""
+    @Test
+    fun `given membership without password when addOne then return bad request`() {
+      val jsonString = """{"userId":"2", "studioId":"1", "login":"login"}"""
 
-    mockMvc.perform(MockMvcRequestBuilders.post(route)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(jsonString))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest)
-  }
+      mockMvc.perform(MockMvcRequestBuilders.post(route)
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(jsonString))
+          .andExpect(status().isBadRequest)
+    }
 
-  @Test
-  fun `given membership with blank login when addOne then return bad request`() {
-    val jsonString = """{"userId":"2", "studioId":"1", "login":"", "password":"password"}"""
+    @Test
+    fun `given membership with blank password when addOne then return bad request`() {
+      val jsonString = """{"userId":"2", "studioId":"1", "login":"login", "password":""}"""
 
-    mockMvc.perform(MockMvcRequestBuilders.post(route)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(jsonString))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest)
-  }
+      mockMvc.perform(MockMvcRequestBuilders.post(route)
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(jsonString))
+          .andExpect(status().isBadRequest)
+    }
 
-  @Test
-  fun `given membership without password when addOne then return bad request`() {
-    val jsonString = """{"userId":"2", "studioId":"1", "login":"login"}"""
+    @Test
+    fun `given membership without userId when addOne then return bad request`() {
+      val jsonString = """{"studioId":"1", "login":"login", "password":"password"}"""
 
-    mockMvc.perform(MockMvcRequestBuilders.post(route)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(jsonString))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest)
-  }
+      mockMvc.perform(MockMvcRequestBuilders.post(route)
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(jsonString))
+          .andExpect(status().isBadRequest)
+    }
 
-  @Test
-  fun `given membership with blank password when addOne then return bad request`() {
-    val jsonString = """{"userId":"2", "studioId":"1", "login":"login", "password":""}"""
+    @Test
+    fun `given membership with invalid userId when addOne then return bad request`() {
+      val jsonString = """{"userId":"20", "studioId":"1", "login":"login", "password":"password"}"""
 
-    mockMvc.perform(MockMvcRequestBuilders.post(route)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(jsonString))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest)
-  }
+      mockMvc.perform(MockMvcRequestBuilders.post(route)
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(jsonString))
+          .andExpect(status().isBadRequest)
+    }
 
-  @Test
-  fun `given membership without userId when addOne then return bad request`() {
-    val jsonString = """{"studioId":"1", "login":"login", "password":"password"}"""
+    @Test
+    fun `given membership without studioId when addOne then return bad request`() {
+      val jsonString = """{"userId":"2", "login":"login", "password":"password"}"""
 
-    mockMvc.perform(MockMvcRequestBuilders.post(route)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(jsonString))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest)
-  }
+      mockMvc.perform(MockMvcRequestBuilders.post(route)
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(jsonString))
+          .andExpect(status().isBadRequest)
+    }
 
-  @Test
-  fun `given membership with invalid userId when addOne then return bad request`() {
-    val jsonString = """{"userId":"20", "studioId":"1", "login":"login", "password":"password"}"""
+    @Test
+    fun `given membership with invalid studioId when addOne then return bad request`() {
+      val jsonString = """{"userId":"2", "studioId":"10", "login":"login", "password":"password"}"""
 
-    mockMvc.perform(MockMvcRequestBuilders.post(route)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(jsonString))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest)
-  }
+      mockMvc.perform(MockMvcRequestBuilders.post(route)
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(jsonString))
+          .andExpect(status().isBadRequest)
+    }
 
-  @Test
-  fun `given membership without studioId when addOne then return bad request`() {
-    val jsonString = """{"userId":"2", "login":"login", "password":"password"}"""
+    @Test
+    fun `given existing membership when addOne then return bad request`() {
+      every { membershipRepository.existsByUserIdAndStudioId(2, 1) } returns true
 
-    mockMvc.perform(MockMvcRequestBuilders.post(route)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(jsonString))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest)
-  }
+      val jsonString = """{"userId":"2", "studioId":"1", "login":"login", "password":"password"}"""
 
-  @Test
-  fun `given membership with invalid studioId when addOne then return bad request`() {
-    val jsonString = """{"userId":"2", "studioId":"10", "login":"login", "password":"password"}"""
+      mockMvc.perform(MockMvcRequestBuilders.post(route)
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(jsonString))
+          .andExpect(status().isBadRequest)
+    }
 
-    mockMvc.perform(MockMvcRequestBuilders.post(route)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(jsonString))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest)
-  }
+    @Test
+    fun `given valid membership when addOne then return membership`() {
+      every { membershipRepository.existsByUserIdAndStudioId(2, 1) } returns false
+      every { membershipRepository.save(ofType(Membership::class)) } returns membership
 
-  @Test
-  fun `given existing membership when addOne then return bad request`() {
-    given(membershipRepository.existsByUserIdAndStudioId(2, 1)).willReturn(true)
+      val jsonString = """{"userId":"2", "studioId":"1", "login":"login", "password":"password"}"""
 
-    val jsonString = """{"userId":"2", "studioId":"1", "login":"login", "password":"password"}"""
-
-    mockMvc.perform(MockMvcRequestBuilders.post(route)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(jsonString))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest)
-  }
-
-  @Test
-  fun `given valid membership when addOne then return membership`() {
-    given(membershipRepository.existsByUserIdAndStudioId(2, 1)).willReturn(false)
-    given<Membership>(membershipRepository.save(any())).willReturn(membership)
-
-    val jsonString = """{"userId":"2", "studioId":"1", "login":"login", "password":"password"}"""
-
-    mockMvc.perform(MockMvcRequestBuilders.post(route)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(jsonString))
-        .andExpect(MockMvcResultMatchers.status().isCreated)
+      mockMvc.perform(MockMvcRequestBuilders.post(route)
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(jsonString))
+          .andExpect(status().isCreated)
+    }
   }
 }

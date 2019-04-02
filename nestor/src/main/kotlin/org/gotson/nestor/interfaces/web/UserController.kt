@@ -32,8 +32,7 @@ class UserController(
   @ResponseStatus(HttpStatus.CREATED)
   fun addOne(@Valid @RequestBody newUser: User): User {
     if (!userRepository.existsByEmail(newUser.email)) {
-      userRepository.save(newUser)
-      return newUser
+      return userRepository.save(newUser)
     } else {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, "A user with this email already exists")
     }

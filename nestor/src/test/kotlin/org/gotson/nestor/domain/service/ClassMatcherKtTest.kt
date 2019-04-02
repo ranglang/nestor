@@ -7,7 +7,7 @@ import org.gotson.nestor.domain.model.PlannedClass
 import org.gotson.nestor.domain.model.PlannedClassBookingState
 import org.gotson.nestor.domain.model.Studio
 import org.gotson.nestor.domain.model.User
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
 class ClassMatcherKtTest {

@@ -2,7 +2,7 @@ package org.gotson.nestor.infrastructure.calendar
 
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.nestor.domain.model.BusyTime
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.springframework.core.io.ClassPathResource
 import java.time.LocalDate
 
