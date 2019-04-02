@@ -1,8 +1,8 @@
 package org.gotson.nestor.interfaces.web
 
-import org.gotson.nestor.domain.model.WeeklyClassRequest
+import org.gotson.nestor.domain.model.ClassRequest
+import org.gotson.nestor.domain.persistence.ClassRequestRepository
 import org.gotson.nestor.domain.persistence.MembershipRepository
-import org.gotson.nestor.domain.persistence.WeeklyClassRequestRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -14,36 +14,37 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
-import java.time.DayOfWeek
+import java.time.LocalDate
 import java.time.LocalTime
 import javax.validation.Valid
+import javax.validation.constraints.Future
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 @RestController
-@RequestMapping("/weeklyclassrequests")
-class WeeklyClassRequestController(
-    private val classRepository: WeeklyClassRequestRepository,
+@RequestMapping("/classrequests")
+class ClassRequestController(
+    private val classRepository: ClassRequestRepository,
     private val membershipRepository: MembershipRepository
 ) {
   @GetMapping
-  fun getAll(): Iterable<WeeklyClassRequestDto> =
+  fun getAll(): Iterable<ClassRequestDto> =
       classRepository.findAll().map { it.toDto() }
 
   @GetMapping("/{id}")
-  fun get(@PathVariable id: Long): WeeklyClassRequestDto =
+  fun get(@PathVariable id: Long): ClassRequestDto =
       classRepository.findByIdOrNull(id)?.toDto() ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  fun addOne(@Valid @RequestBody classRequest: WeeklyClassRequestCreationDto): WeeklyClassRequestDto {
+  fun addOne(@Valid @RequestBody classRequest: ClassRequestCreationDto): ClassRequestDto {
     val membership = membershipRepository.findByIdOrNull(classRequest.membershipId)
         ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Membership not found")
     return classRepository.save(
-        WeeklyClassRequest(
+        ClassRequest(
             membership = membership,
             time = classRequest.time,
-            day = classRequest.day,
+            date = classRequest.date,
             location = classRequest.location,
             type = classRequest.type
         )
@@ -60,29 +61,29 @@ class WeeklyClassRequestController(
   }
 }
 
-data class WeeklyClassRequestCreationDto(
+data class ClassRequestCreationDto(
     val membershipId: Long,
     @get:NotNull val time: LocalTime,
-    @get:NotNull val day: DayOfWeek,
+    @get:NotNull @get:Future val date: LocalDate,
     @get:NotBlank val location: String,
     @get:NotBlank val type: String
 )
 
-data class WeeklyClassRequestDto(
+data class ClassRequestDto(
     val id: Long,
     val membershipId: Long,
     val time: LocalTime,
-    val day: DayOfWeek,
+    val date: LocalDate,
     val location: String,
     val type: String
 )
 
-fun WeeklyClassRequest.toDto() =
-    WeeklyClassRequestDto(
+fun ClassRequest.toDto() =
+    ClassRequestDto(
         id = id!!,
         membershipId = membership.id!!,
         time = time,
-        day = day,
+        date = date,
         location = location,
         type = type
     )

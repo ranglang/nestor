@@ -14,7 +14,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.WebDriverWait
 import java.io.Closeable
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
@@ -85,9 +84,7 @@ class PureDriver(
     return this
   }
 
-  fun setDate(dateTime: LocalDateTime): PureDriver {
-    val date = dateTime.toLocalDate()
-
+  fun setDate(date: LocalDate): PureDriver {
     val previousDateEl = driver.findElement(By.id("txtDate"))
     val previousDateValue = previousDateEl.getAttribute("value")
     val previousDate = LocalDate.parse(previousDateValue, formatterDateInput)

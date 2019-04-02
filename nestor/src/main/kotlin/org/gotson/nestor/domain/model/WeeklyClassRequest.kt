@@ -9,15 +9,15 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-data class RecurringWishedClass(
+data class WeeklyClassRequest(
     @Id
     @GeneratedValue
     val id: Long? = null,
 
     @ManyToOne(fetch = FetchType.EAGER)
     val membership: Membership,
-    val time: LocalTime,
     val day: DayOfWeek,
+    val time: LocalTime,
     val location: String,
     val type: String
 )

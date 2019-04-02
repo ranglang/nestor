@@ -3,7 +3,9 @@ application.version: ${version}
 chrome.driver.wait: 30
 
 nestor:
-  schedule: 0 1 9 * * ?
+  schedule:
+    booking: 0 1 9 * * ?
+    deleteOld: 0 1 5 * * ?
   pure:
     advanceBookingDays: 2
     format:

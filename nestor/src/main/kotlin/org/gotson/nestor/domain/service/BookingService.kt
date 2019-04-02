@@ -22,7 +22,7 @@ class BookingService(
 
   @Async
   fun bookPureYoga(classRequest: ClassRequest) {
-    logger.info { "Wished class: $classRequest" }
+    logger.info { "Class requested: $classRequest" }
 
     try {
       busyTimeFilterer.checkForConflicts(classRequest)
@@ -40,7 +40,7 @@ class BookingService(
         pureDriver.of(classRequest.membership.studio.url)
             .performUserLogin(decryptedUserName, decryptedPassword)
             .setAllLocation()
-            .setDate(classRequest.dateTime)
+            .setDate(classRequest.date)
             .parse()
 
         //find matching candidates

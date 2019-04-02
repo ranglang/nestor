@@ -17,7 +17,7 @@ class BusyTimeFilterer constructor(
     }
 
     busyTimes.firstOrNull {
-      classRequest.dateTime.toLocalDate().isWithinRange(it.startDate, it.endDate)
+      classRequest.date.isWithinRange(it.startDate, it.endDate)
     }?.let {
       throw ScheduleConflictException("Conflicting schedule", it)
     }

@@ -69,9 +69,8 @@ class NotificationSender constructor(
     val body = """Nestor was trying to book a class for you, but could not login to your account.
                     |Please check that your login and password are correct.
                     |
-                    |Wished class
                     |Class: ${classRequest.type}
-                    |Date and time: ${classRequest.dateTime.format(formatterDate)} ${classRequest.dateTime.format(formatterTime)}
+                    |Date and time: ${classRequest.date.format(formatterDate)} ${classRequest.time.format(formatterTime)}
                     |Location: ${classRequest.location}
                     |
                 """.trimMargin()
@@ -83,9 +82,8 @@ class NotificationSender constructor(
     val subject = "[Nestor] An error occured while booking"
     val body = """Nestor was trying to book a class for you, but an error occured :(
                     |
-                    |Wished class
                     |Class: ${classRequest.type}
-                    |Date and time: ${classRequest.dateTime.format(formatterDate)} ${classRequest.dateTime.format(formatterTime)}
+                    |Date and time: ${classRequest.date.format(formatterDate)} ${classRequest.time.format(formatterTime)}
                     |Location: ${classRequest.location}
                     |
                 """.trimMargin()
@@ -97,9 +95,8 @@ class NotificationSender constructor(
     val subject = "[Nestor] No matching class found"
     val body = """Nestor was trying to book a class for you, but no match could be found
                     |
-                    |Wished class
                     |Class: ${classRequest.type}
-                    |Date and time: ${classRequest.dateTime.format(formatterDate)} ${classRequest.dateTime.format(formatterTime)}
+                    |Date and time: ${classRequest.date.format(formatterDate)} ${classRequest.time.format(formatterTime)}
                     |Location: ${classRequest.location}
                     |
                 """.trimMargin()
@@ -112,7 +109,7 @@ class NotificationSender constructor(
     val body = """Nestor was trying to book a class for you, but you already have something planned!
                     |
                     |Class: ${classRequest.type}
-                    |Date and time: ${classRequest.dateTime.format(formatterDate)} ${classRequest.dateTime.format(formatterTime)}
+                    |Date and time: ${classRequest.date.format(formatterDate)} ${classRequest.time.format(formatterTime)}
                     |Location: ${classRequest.location}
                     |
                     |Planned event: ${busyTime.summary}

@@ -8,7 +8,9 @@ import org.gotson.nestor.domain.model.PlannedClassBookingState
 import org.gotson.nestor.domain.model.Studio
 import org.gotson.nestor.domain.model.User
 import org.junit.jupiter.api.Test
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 
 class ClassMatcherKtTest {
 
@@ -21,7 +23,8 @@ class ClassMatcherKtTest {
         location = "Yoga - Hutchison House",
         bookingState = PlannedClassBookingState.OPEN)
     val wished = ClassRequest(
-        dateTime = LocalDateTime.of(2018, 4, 29, 10, 15),
+        date = LocalDate.of(2018, 4, 29),
+        time = LocalTime.of(10, 15),
         type = "yoga for runners",
         location = "hutchison house",
         membership = Membership(

@@ -7,7 +7,7 @@ import org.gotson.nestor.domain.model.PlannedClass
 private val logger = KotlinLogging.logger {}
 
 fun ClassRequest.matches(plannedClass: PlannedClass): Boolean {
-  logger.debug { "Matching classes:\nPlanned: $plannedClass\nWished: ${this.summary()}" }
+  logger.debug { "Matching classes:\nPlanned: $plannedClass\nRequested: ${this.summary()}" }
 
   val dateMatch = dateTime == plannedClass.dateTime
   logger.debug { "Dates matching: $dateMatch" }
