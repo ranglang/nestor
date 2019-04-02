@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "org.gotson"
-version = "2.0.0"
+version = "2.1.0"
 
 repositories {
   jcenter()
@@ -82,7 +82,10 @@ tasks {
 }
 
 configure<DockerExtension> {
-  name = "gotson/nestor:latest"
+  name = "gotson/nestor"
+  tag("latest", "gotson/nestor:latest")
+  tag("version", "gotson/nestor:$version")
   copySpec.from(tasks.getByName("unpack").outputs).into("dependency")
   buildArgs(mapOf("DEPENDENCY" to "dependency"))
+  dependsOn(tasks.getByName("clean"))
 }
