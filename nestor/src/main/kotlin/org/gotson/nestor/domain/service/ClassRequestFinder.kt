@@ -16,7 +16,7 @@ class ClassRequestFinder(
     private val weeklyClassRequestRepository: WeeklyClassRequestRepository,
     private val classRequestRepository: ClassRequestRepository,
 
-    @Value("\${nestor.pure.advance-booking-days:2}")
+    @Value("\${nestor.pure.advanceBookingDays:2}")
     private val advanceBookingDays: Long
 ) {
 

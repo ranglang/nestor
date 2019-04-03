@@ -36,15 +36,15 @@ class BookingService(
     val decryptedPassword = encryptionService.decrypt(classRequest.membership.password)
 
     try {
-      pureDriverBuilder.build().use { pureDriver ->
-        pureDriver.of(classRequest.membership.studio.url)
+      pureDriverBuilder.build().use { driver ->
+        driver.of(classRequest.membership.studio)
             .performUserLogin(decryptedUserName, decryptedPassword)
             .setAllLocation()
             .setDate(classRequest.date)
             .parse()
 
         //find matching candidates
-        val matchingClasses = pureDriver.bookableClasses.filter { classRequest.matches(it) }
+        val matchingClasses = driver.bookableClasses.filter { classRequest.matches(it) }
 
         logger.info { "Found ${matchingClasses.size} matching classes:" }
         matchingClasses.forEach { logger.info { it } }
@@ -52,7 +52,7 @@ class BookingService(
         if (matchingClasses.size == 1) {
           val classToBook = matchingClasses.first()
           logger.info { "Found 1 matching class, trying to book it: $classToBook" }
-          val result = pureDriver.book(classToBook)
+          val result = driver.book(classToBook)
           when (result) {
             BookingResult.BOOKED -> notificationSender.notifySuccessfulBooking(classToBook, classRequest.membership.user)
             BookingResult.WAITLIST -> notificationSender.notifyWaitlistedBooking(classToBook, classRequest.membership.user)

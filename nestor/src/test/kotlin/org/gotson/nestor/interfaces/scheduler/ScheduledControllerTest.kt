@@ -75,7 +75,7 @@ class ScheduledControllerTest(
     )
     classRequestRepository.saveAll(listOf(yesterday, today, tomorrow))
 
-    scheduledController.deleteOldClassRequest()
+    scheduledController.deletePastClassRequests()
 
     assertThat(classRequestRepository.count()).isEqualTo(2)
   }

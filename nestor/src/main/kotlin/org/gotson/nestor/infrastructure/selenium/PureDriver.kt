@@ -5,6 +5,7 @@ import org.gotson.nestor.domain.model.BookingResult
 import org.gotson.nestor.domain.model.CredentialsException
 import org.gotson.nestor.domain.model.PlannedClass
 import org.gotson.nestor.domain.model.PlannedClassBookingState
+import org.gotson.nestor.domain.model.Studio
 import org.openqa.selenium.By
 import org.openqa.selenium.Keys
 import org.openqa.selenium.WebElement
@@ -38,8 +39,9 @@ class PureDriver(
       .appendPattern(timeFormat)
       .toFormatter()
   private lateinit var date: LocalDate
+  private lateinit var studio: Studio
 
-  private val allClasses = ArrayList<PlannedClass>()
+  val allClasses = ArrayList<PlannedClass>()
   private val _bookableClasses = HashMap<PlannedClass, WebElement>()
 
   val bookableClasses: Set<PlannedClass>
@@ -64,8 +66,9 @@ class PureDriver(
     return this
   }
 
-  fun of(url: String): PureDriver {
-    driver.get(url)
+  fun of(studio: Studio): PureDriver {
+    driver.get(studio.url)
+    this.studio = studio
 
     return this
   }
@@ -113,7 +116,7 @@ class PureDriver(
       // skip day of week table element
       if (rowEl.size < 2) return@forEach
 
-      val classDateTime = date.atTime(LocalTime.parse(rowEl[0].text.trim(), formatterAmPmParser))
+      val classTime = LocalTime.parse(rowEl[0].text.trim(), formatterAmPmParser)
       val classType = rowEl[2].text
       val classInstructor = rowEl[3].text
       val classLocation = rowEl[5].text
@@ -131,11 +134,13 @@ class PureDriver(
           }
 
       val parsedClass = PlannedClass(
-          dateTime = classDateTime,
+          date = date,
+          time = classTime,
           type = classType,
           instructor = classInstructor,
           location = classLocation,
-          bookingState = classBookableState)
+          bookingState = classBookableState,
+          studio = studio)
 
       allClasses += parsedClass
       if (parsedClass.bookingState == PlannedClassBookingState.OPEN && signUpButtonEl != null)

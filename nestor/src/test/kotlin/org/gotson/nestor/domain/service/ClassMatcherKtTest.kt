@@ -9,7 +9,6 @@ import org.gotson.nestor.domain.model.Studio
 import org.gotson.nestor.domain.model.User
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 
 class ClassMatcherKtTest {
@@ -17,11 +16,13 @@ class ClassMatcherKtTest {
   @Test
   fun `class matching is case insensitive`() {
     val planned = PlannedClass(
-        dateTime = LocalDateTime.of(2018, 4, 29, 10, 15),
+        date = LocalDate.of(2018, 4, 29),
+        time = LocalTime.of(10, 15),
         type = "Yoga for Runners",
         instructor = "Priscilla",
         location = "Yoga - Hutchison House",
-        bookingState = PlannedClassBookingState.OPEN)
+        bookingState = PlannedClassBookingState.OPEN,
+        studio = Studio(id = 123, name = "studio", url = "url"))
     val wished = ClassRequest(
         date = LocalDate.of(2018, 4, 29),
         time = LocalTime.of(10, 15),

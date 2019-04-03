@@ -23,12 +23,12 @@ class NotificationSender constructor(
   private val formatterTime = DateTimeFormatter.ofPattern(timeFormat)
 
   fun notifySuccessfulBooking(plannedClass: PlannedClass, user: User) {
-    val subject = "[Nestor] Booked ${plannedClass.type} at ${plannedClass.dateTime.format(formatterTime)} on ${plannedClass.dateTime.format(formatterDate)}"
+    val subject = "[Nestor] Booked ${plannedClass.type} at ${plannedClass.time.format(formatterTime)} on ${plannedClass.date.format(formatterDate)}"
     val body = """Nestor booked a class for you!
                     |
                     |Class: ${plannedClass.type}
                     |Instructor: ${plannedClass.instructor}
-                    |Date and time: ${plannedClass.dateTime.format(formatterDate)} ${plannedClass.dateTime.format(formatterTime)}
+                    |Date and time: ${plannedClass.date.format(formatterDate)} ${plannedClass.time.format(formatterTime)}
                     |Location: ${plannedClass.location}
                     |
                 """.trimMargin()
@@ -37,12 +37,12 @@ class NotificationSender constructor(
   }
 
   fun notifyWaitlistedBooking(plannedClass: PlannedClass, user: User) {
-    val subject = "[Nestor] Waitlisted ${plannedClass.type} at ${plannedClass.dateTime.format(formatterTime)} on ${plannedClass.dateTime.format(formatterDate)}"
+    val subject = "[Nestor] Waitlisted ${plannedClass.type} at ${plannedClass.time.format(formatterTime)} on ${plannedClass.date.format(formatterDate)}"
     val body = """Nestor booked a class for you on waitlist!
                     |
                     |Class: ${plannedClass.type}
                     |Instructor: ${plannedClass.instructor}
-                    |Date and time: ${plannedClass.dateTime.format(formatterDate)} ${plannedClass.dateTime.format(formatterTime)}
+                    |Date and time: ${plannedClass.date.format(formatterDate)} ${plannedClass.time.format(formatterTime)}
                     |Location: ${plannedClass.location}
                     |
                 """.trimMargin()
@@ -56,7 +56,7 @@ class NotificationSender constructor(
                     |
                     |Class: ${plannedClass.type}
                     |Instructor: ${plannedClass.instructor}
-                    |Date and time: ${plannedClass.dateTime.format(formatterDate)} ${plannedClass.dateTime.format(formatterTime)}
+                    |Date and time: ${plannedClass.date.format(formatterDate)} ${plannedClass.time.format(formatterTime)}
                     |Location: ${plannedClass.location}
                     |
                 """.trimMargin()

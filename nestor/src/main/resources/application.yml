@@ -4,8 +4,12 @@ chrome.driver.wait: 30
 
 nestor:
   schedule:
-    booking: 0 1 9 * * ?
-    deleteOld: 0 1 5 * * ?
+    bookClassRequests: 0 1 9 * * ?
+    deletePastClassRequests: 0 1 5 * * ?
+    updateFutureClasses: 0 1 6 * * ?
+  updateClasses:
+    daysFrom: 3
+    daysTo: 10
   pure:
     advanceBookingDays: 2
     format:
